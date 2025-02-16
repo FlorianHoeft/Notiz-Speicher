@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2025-01-15" />
+  <title>Instructions for Unit 7 - Building a REST api with Spring Boot</title>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="css/mvp.css" />
+<style type="text/css">
+  :root {
+  --width-content: 1080px;
+  }
+
+  nav {
+    justify-content: space-around;
+  }
+
+</style>
+</head>
+<body>
+<header id="title-block-header">
+  <nav id="TOC">
+      <a href="/"><img alt="Logo" src="img/logo_thowl.png" height="70"></a>
+            <ul>
+          <li><a href="#">Menu</a>
+            <ul>
+            <li><a href="#building-a-web-api-with-spring-boot"
+            id="toc-building-a-web-api-with-spring-boot">Building a Web
+            API with Spring Boot</a>
+            <ul>
+            <li><a href="#web-api" id="toc-web-api">Web API</a></li>
+            <li><a href="#rest-methods" id="toc-rest-methods">REST
+            methods</a></li>
+            <li><a href="#sample-project" id="toc-sample-project">Sample
+            project</a></li>
+            </ul></li>
+            </ul>
+          </li>
+      </ul>
+        </nav>
+<h1 class="title">Instructions for Unit 7 - Building a REST api with
+Spring Boot</h1>
+<p class="date">January 14, 2025</p>
+</header>
+<main>
+<hr>
+<article>
+<h1 id="building-a-web-api-with-spring-boot">Building a Web API with
+Spring Boot</h1>
+<h2 id="web-api">Web API</h2>
+<h3 id="introduction">Introduction</h3>
+<p>REST API stands for Representational State Transfer Application
+Programming Interface. It is a set of rules and conventions for building
+and interacting with web services over HTTP.</p>
+<p>REST is an <strong>architectural style</strong>, and APIs following
+this style are referred to as <strong>RESTful APIs</strong>.</p>
+<h3 id="key-principles">Key principles</h3>
+<ul>
+<li><p><strong>Statelessness</strong>: Each request from a client to a
+server must contain all the information needed to understand and process
+the request. The server should not store any information about the
+client’s state between requests.</p></li>
+<li><p><strong>Client-Server Architecture</strong>: The client and
+server are separate entities that communicate over a network. The client
+is responsible for the user interface and user experience, while the
+server is responsible for processing requests and managing
+resources.</p></li>
+<li><p><strong>Uniform Interface</strong>: This principle emphasizes a
+consistent and uniform way to interact with APIs. It includes four
+constraints:</p>
+<ul>
+<li><em>Resource-Based</em>: Resources (such as data or services) are
+identified by unique URIs (Uniform Resource Identifiers), and they are
+manipulated using standard HTTP methods (GET, POST, PUT, DELETE).</li>
+<li><em>Representation</em>: Resources can have multiple representations
+(e.g., JSON, XML), and clients interact with these representations.</li>
+<li><em>Stateless Communication</em>: Each request from a client to a
+server must contain all the information needed to understand and process
+the request.</li>
+<li><em>Hypermedia as the Engine of Application State (HATEOAS)</em>:
+Clients interact with the application entirely through hypermedia
+provided dynamically by application servers.</li>
+</ul></li>
+<li><p><strong>Stateless Communication</strong>: Each request from a
+client to a server must contain all the information needed to understand
+and process the request.</p></li>
+</ul>
+<h2 id="rest-methods">REST methods</h2>
+<p>RESTful APIs use a set of standard HTTP methods to perform actions on
+resources. These methods are applied to resources identified by Uniform
+Resource Identifiers (URIs). The response is a JSON-formatted
+document.</p>
+<p>The main HTTP methods used in RESTful APIs are:</p>
+<ol type="1">
+<li><strong>GET</strong>: The GET method is used to retrieve information
+or data from a specified resource. It should not cause any side effects
+on the server, meaning it should only retrieve data and not modify
+it.</li>
+</ol>
+<p>Example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">GET</span> /api/users/1</span></code></pre></div>
+<ol start="2" type="1">
+<li><strong>POST</strong>: The POST method is used to submit data to be
+processed to a specified resource. It is often used to create a new
+resource. The POST header is formatted as an JSON object.</li>
+</ol>
+<p>Example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">POST</span> /api/users/1</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="st">&quot;id&quot;</span><span class="ex">:</span><span class="st">&quot;1&quot;</span><span class="ex">,</span> <span class="st">&quot;username&quot;</span>: <span class="st">&quot;Admin&quot;</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;admin@prog3.th-owl.de&quot;</span> }</span></code></pre></div>
+<ol start="3" type="1">
+<li><strong>PUT</strong>: The PUT method is used to update a resource or
+create a new resource if it doesn’t exist. The entire resource is
+usually replaced with the new data.</li>
+</ol>
+<p>Once we have created an User (see previous step), we can update its
+values.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">PUT</span> /api/users/1</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span> <span class="st">&quot;id&quot;</span><span class="ex">:</span><span class="st">&quot;1&quot;</span><span class="ex">,</span> <span class="st">&quot;username&quot;</span>: <span class="st">&quot;Administrator&quot;</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;admin@prog3.aes.th-owl.de&quot;</span> }</span></code></pre></div>
+<ol start="4" type="1">
+<li><strong>DELETE</strong>: The DELETE method is used to request the
+removal of a resource. The return value is Boolean or is expressed by
+HTTP status codes.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">DELETE</span> /api/users/1</span></code></pre></div>
+<h2 id="sample-project">Sample project</h2>
+<p>The example project <em>07-REST-API</em> implements a REST based API
+that provides cross-platform access to our system services. Requests and
+responses are encoded as JSON objects.</p>
+<h3 id="api-documentation">API documentation</h3>
+<p>The API documentation is automatically generated by the
+<strong>Spring REST docs</strong> module and is available under the
+following links:</p>
+<ul>
+<li><a href="http://localhost:8080/api-docs">API docs</a>: API
+documentation in JSON format. Used to autogenerate client software.</li>
+<li><a href="http://localhost:8080/api/documentation">Swagger API</a>:
+Interactive Swagger API documentation. Used to explore and to test the
+actual API endpoints.</li>
+<li><a href="http://localhost:8080/api/users">User service</a>: Base
+URL, bound to <code>de.thowl.prog3.api.web.api.UserService</code></li>
+</ul>
+<hr>
+</article>
+</main>
+</body>
+</html>

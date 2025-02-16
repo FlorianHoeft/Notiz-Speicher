@@ -1,0 +1,1 @@
+pandoc -s README.md --toc --toc-depth=2 --template pandoc/template.html -o src/main/resources/static/index.html  
