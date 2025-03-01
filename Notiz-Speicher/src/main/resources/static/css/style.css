@@ -1,0 +1,107 @@
+/* Standard Sidebar (15% Breite) */
+.sidebar {
+    width: 225px; /* Feste Breite */
+    height: 100vh; /* Ganze Höhe des Bildschirms */
+    background-color: #2c3e50; /* Blau */
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    transition: width 0.5s ease-in-out; /* Animation */
+    color: white;
+}
+
+
+/* Wenn minimiert (5% Breite) */
+.sidebar.minimized {
+    width: 25px;
+}
+
+/* Menü-Elemente ausblenden, wenn minimiert */
+.sidebar.minimized ul {
+    display: none;
+}
+/* Menü-Liste weiter nach unten verschieben */
+.sidebar ul {
+    padding: 0;
+    list-style: none;
+    margin-top: 100px; /* Hier wird der Abstand der Liste nach unten angepasst */
+}
+
+/* Links in der Sidebar (Textfarbe auf weiß setzen) */
+.sidebar ul li a {
+    color: white; /* Textfarbe für Links */
+    text-decoration: none;
+    font-size: 18px;
+    display: block; /* Für bessere Klickbarkeit */
+    padding: 10px; /* Etwas Abstand für die Links */
+    border-radius: 5px; /* Abgerundete Ecken für die Links */
+    transition: background-color 0.3s ease; /* Übergangseffekt bei Hover */
+}
+
+/* Hover-Effekt für Links (Farbe ändern, wenn der Nutzer darüber fährt) */
+.sidebar ul li a:hover {
+    background-color: #34495e; /* Etwas hellerer Hintergrund bei Hover */
+}
+
+.logo {
+    position: absolute;
+    top: 20px; /* Abstand vom oberen Rand */
+    left: 60px; /* Abstand vom linken Rand */
+    width: 200px;
+    z-index: 1000; /* Button über der Sidebar */
+}
+/* Sicherstellen, dass der Link um das Logo keine Unterstreichung hat */
+#logoLink {
+    text-decoration: none; /* Keine Unterstreichung */
+}
+
+/* Cursor ändern, wenn der Benutzer über das Logo fährt */
+#logoLink:hover {
+    cursor: pointer; /* Zeigt an, dass das Logo klickbar ist */
+}
+/* Hauptinhalt direkt neben der Sidebar */
+.content {
+    margin-left: 250px; /* Gleiche Breite wie die Sidebar */
+    padding: 20px;
+    margin-top: 80px; /* Abstand vom oberen Rand (bewegt sich mit der Sidebar) */
+    transition: margin-left 0.5s ease-in-out, margin-top 0.5s ease-in-out; /* Animation für Sidebar-Einblendung und Verschiebung */
+}
+
+/* Wenn Sidebar minimiert wird */
+.sidebar.minimized + .content {
+    margin-left: 75px; /* Verändert den Abstand, wenn die Sidebar minimiert wird */
+}
+
+/* Sidebar ausblenden (bei kleinem Fenster) */
+@media screen and (max-width: 1100px) {
+    .sidebar {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .content {
+        margin-left: 25px; /* Kein Platz für die Sidebar mehr */
+        margin-top: 80px; /* Kleineren Abstand oben, wenn das Fenster kleiner wird */
+    }
+}
+/* Button für Sidebar-Toggle */
+.sidebar-toggle {
+    position: absolute;
+    top: 20px; /* Abstand vom oberen Rand */
+    left: 20px; /* Abstand vom linken Rand */
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    z-index: 1000; /* Button über der Sidebar */
+}
+.sidebar-toggle:focus {
+    outline: none;
+}
+/* Button deaktivieren, wenn das Fenster klein ist */
+.sidebar-toggle:disabled {
+    cursor: not-allowed;  /* Zeiger wird geändert, um anzuzeigen, dass der Button deaktiviert ist */
+    opacity: 0.5; /* Button erscheint halbtransparent */
+}

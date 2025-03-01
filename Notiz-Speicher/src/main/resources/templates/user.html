@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Benutzerübersicht</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
+<!-- Das Logo als klickbarer Link -->
+<a href="/user" id="logoLink">
+    <img th:src="@{/img/thowl_logo.png}" alt="THOWL Logo" class="logo">
+</a>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <ul>
+        <li><a th:href="@{/user/profile}">Profil</a></li>
+        <li><a th:href="@{/user/settings}">Einstellungen</a></li>
+        <li><a th:href="@{/user/logout}">Logout</a></li>
+    </ul>
+</div>
+<!-- Hauptinhalt -->
+<div class="content" id="content">
+    <h1>Benutzerübersicht</h1>
+
+    <!-- Benutzerliste -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>E-Mail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf-Schleife für Benutzer -->
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
