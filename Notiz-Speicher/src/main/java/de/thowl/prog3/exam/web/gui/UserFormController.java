@@ -30,6 +30,12 @@ public class UserFormController {
         return "userform";
     }
 
+    @GetMapping("/user/login")
+    public String showLoginForm() {
+        log.debug("entering showUserForm");
+        return "login";
+    }
+
     @PostMapping("/user")
     public String processUserForm(Model model, UserForm formdata) {
         log.debug("entering processUserForm");
