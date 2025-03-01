@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
@@ -22,18 +21,20 @@
         }
     </style>
 </head>
-
-<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<body  class="d-flex justify-content-center align-items-center vh-100 bg-light">
 <div class="text-center">
     <img th:src="@{/img/thowl_logo.png}" alt="THOWL Logo" class="mb-4" style="max-width: 300px;">
     <div class="card p-5 shadow" style="max-width: 900px; width: 100%;">
-        <h3 class="text-center">Login</h3>
-        <form th:action="@{/user/login}" method="post">
+        <h3 class="text-center">Erstelle einen Account</h3>
+        <form th:action="@{/user/register}" method="post">
             <div class="mb-4">
-                <label for="username" class="form-label">Benutzername</label>
+                <label for="e-mail" class="form-label">E-Mail-Adresse</label>
+                <input type="text" id="e-mail" name="e-mail" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label for="username" class="form-label">Benutzernamen</label>
                 <input type="text" id="username" name="username" class="form-control" required>
             </div>
-
             <div class="mb-4">
                 <label for="password" class="form-label">Passwort</label>
                 <div class="password-container">
@@ -43,34 +44,22 @@
                     </button>
                 </div>
             </div>
-
-            <div class="text-end mb-4">
-                <a th:href="@{/user/forgot-password}" class="text-primary text-decoration-none fs-6">Passwort vergessen?</a>
-            </div>
-
-            <div th:if="${param.error}" class="alert alert-danger p-2 text-center">
-                Falscher Benutzername oder Passwort!
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Einloggen</button>
+            <button type="submit" class="btn btn-primary w-100">Registrieren</button>
         </form>
-
-        <a th:href="@{/user/register}" class="d-block text-center mt-4 text-decoration-none">Noch kein Konto? Jetzt registrieren</a>
+        <a th:href="@{/user/login}" class="d-block text-center mt-4 text-decoration-none">Zurück</a>
     </div>
 </div>
 <script>
-    // Funktion zum Umschalten der Passwortsichtbarkeit
     function togglePasswordVisibility() {
         const passwordInput = document.getElementById('password');
         const icon = document.querySelector('.material-icons');
 
-        // Überprüfen, ob das Passwort sichtbar ist und ändern
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            icon.textContent = 'visibility_off';  // Ändert das Icon zu 'sichtbar aus'
+            icon.textContent = 'visibility_off';
         } else {
             passwordInput.type = 'password';
-            icon.textContent = 'visibility';  // Ändert das Icon zurück zu 'unsichtbar'
+            icon.textContent = 'visibility';
         }
     }
 </script>

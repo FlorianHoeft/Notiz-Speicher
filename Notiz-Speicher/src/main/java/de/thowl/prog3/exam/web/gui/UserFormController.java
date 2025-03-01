@@ -32,8 +32,20 @@ public class UserFormController {
 
     @GetMapping("/user/login")
     public String showLoginForm() {
-        log.debug("entering showUserForm");
+        log.debug("entering showLoginForm");
         return "login";
+    }
+
+    @GetMapping("/user/register")
+    public String showregisterForm() {
+        log.debug("entering showRegisterForm");
+        return "register";
+    }
+
+    @GetMapping("/user/forgot-password")
+    public String showforgot_passwordForm() {
+        log.debug("entering showForgot-passwordForm");
+        return "forgot-password";
     }
 
     @PostMapping("/user")
