@@ -1,20 +1,26 @@
 function toggleSidebar() {
     let sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("minimized");
+
+    // Sidebar nur umschalten, wenn das Fenster größer als 1000px ist
+    if (window.innerWidth > 1000) {
+        sidebar.classList.toggle("minimized");
+    }
 }
-
 // Event-Listener für Fenstergrößenänderung
-window.addEventListener('resize', function() {
-    var sidebar = document.getElementById('sidebar');
-    var sidebarToggleButton = document.getElementById('sidebarToggle');
-    var menuItems = document.querySelectorAll('.sidebar ul li');
+window.addEventListener("resize", handleResize);
 
-    // Wenn das Fenster kleiner oder gleich 768px ist, die Sidebar minimieren und Menü-Elemente ausblenden
+// Initial aufrufen, um die richtige Einstellung zu setzen
+handleResize();
+
+function handleResize() {
+    let sidebar = document.getElementById("sidebar");
+    let sidebarToggleButton = document.getElementById("sidebarToggle");
+
     if (window.innerWidth <= 1000) {
-        sidebar.classList.add('minimized');  // Sidebar minimieren
+        sidebar.classList.add("minimized");  // Sidebar minimieren
         sidebarToggleButton.disabled = true; // Toggle-Button deaktivieren
     } else {
-        sidebar.classList.remove('minimized');  // Sidebar wiederherstellen
+        sidebar.classList.remove("minimized");  // Sidebar wiederherstellen
         sidebarToggleButton.disabled = false; // Toggle-Button aktivieren
     }
-});
+}
