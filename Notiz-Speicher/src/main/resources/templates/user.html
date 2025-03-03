@@ -7,48 +7,26 @@
 </head>
 
 <body>
-<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
-<!-- Das Logo als klickbarer Link -->
-<a href="/user" id="logoLink">
-    <img th:src="@{/img/thowl_logo.png}" alt="THOWL Logo" class="logo">
-</a>
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-    <ul>
-        <li><a th:href="@{/user}" class="sidebar-link"><i class="fas fa-home"></i><span>Übersicht</span></a></li>
-        <li><a th:href="@{/user/documents}" class="sidebar-link"><i class="fas fa-folder"></i><span>Dokumente</span></a></li>
-        <li><a th:href="@{/user/favorites}" class="sidebar-link"><i class="fas fa-star"></i><span>Favoriten</span></a></li>
-        <li><a th:href="@{/user/search}" class="sidebar-link"><i class="fas fa-search"></i><span>Suchen</span></a></li>
-    </ul>
-    <!-- Bottom-Items als separater Block -->
-    <ul class="bottom-items">
-        <li class="bottom-item"><a th:href="@{/user/profile}" class="sidebar-link"><i class="fas fa-user"></i><span>Profil</span></a></li>
-        <li class="bottom-item"><a th:href="@{/user/settings}" class="sidebar-link"><i class="fas fa-cog"></i><span>Einstellungen</span></a></li>
-        <li class="bottom-item"><a th:href="@{/user/logout}" class="sidebar-link"><i class="fas fa-sign-out-alt"></i><span>Abmelden</span></a></li>
-    </ul>
-</div>
-<!-- Hauptinhalt -->
-<div class="content" id="content">
-    <h1>Benutzerübersicht</h1>
-
-    <!-- Benutzerliste -->
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>E-Mail</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Thymeleaf-Schleife für Benutzer -->
-        <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.email}"></td>
-        </tr>
-        </tbody>
-    </table>
+<div th:replace="fragments/layout :: layout(~{::content})">
+    <div th:fragment="content">
+        <h1>Benutzerübersicht</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>E-Mail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script th:src="@{/js/script.js}"></script>

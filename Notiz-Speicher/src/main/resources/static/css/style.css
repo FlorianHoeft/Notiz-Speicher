@@ -79,7 +79,15 @@
     left: 60px; /* Abstand vom linken Rand */
     width: 200px;
     z-index: 1000; /* Button über der Sidebar */
+    transition: all 0s ease;
 }
+/* Minimiertes Logo: Knapp unterhalb des Toggle-Buttons */
+#logo.minimized {
+    top: 70px;      /* Beispiel: knapp unter dem Toggle-Button */
+    left: 10px;     /* Neue Position */
+    width: 50px;    /* Kleinere Breite */
+}
+
 /* Sicherstellen, dass der Link um das Logo keine Unterstreichung hat */
 #logoLink {
     text-decoration: none; /* Keine Unterstreichung */
