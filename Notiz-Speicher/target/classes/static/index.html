@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Anleitung für Projekttemplate Programmieren 3</title>
+  <link rel="stylesheet" href="css/mvp.css" />
+<style type="text/css">
+  :root {
+  --width-content: 1080px;
+  }
+
+  nav {
+    justify-content: space-around;
+  }
+
+</style>
+</head>
+<body>
+<header id="title-block-header">
+  <nav id="TOC">
+      <a href="/"><img alt="Logo" src="img/thowl_logo.png" height="70"></a>
+            <ul>
+          <li><a href="#">Menu</a>
+            <ul>
+            <li><a href="#template-für-abgabe-programmieren-3"
+            id="toc-template-für-abgabe-programmieren-3">Template für
+            Abgabe “Programmieren 3”</a>
+            <ul>
+            <li><a href="#umfang-und-anforderungen-der-prüfung"
+            id="toc-umfang-und-anforderungen-der-prüfung">Umfang und
+            Anforderungen der Prüfung</a></li>
+            <li><a href="#verwendung-des-beispielprojektes"
+            id="toc-verwendung-des-beispielprojektes">Verwendung des
+            Beispielprojektes</a></li>
+            </ul></li>
+            </ul>
+          </li>
+      </ul>
+        </nav>
+<h1 class="title">Anleitung für Projekttemplate Programmieren 3</h1>
+</header>
+<main>
+<hr>
+<article>
+<h1 id="template-für-abgabe-programmieren-3">Template für Abgabe
+“Programmieren 3”</h1>
+<h2 id="umfang-und-anforderungen-der-prüfung">Umfang und Anforderungen
+der Prüfung</h2>
+<h3 id="überprüfte-lernziele">Überprüfte Lernziele</h3>
+<p>Die Prüfungsleistung im Modul 8522 “Programmiersprachen III” besteht
+aus der Umsetzung und der Dokumentation eines Beispielprojektes. Durch
+ihre Implementierung soll nachgewiesen werden:</p>
+<ul>
+<li>Befähigung zur Planung und zum Entwurf einer einfachen
+serverseitigen Anwendung</li>
+<li>Kenntnisse in Planung und Umsetzung eines Datenmodells, insbesondere
+Anwendung von SQL-Kenntnissen (Querbezug zum Modul Datenbanken)</li>
+<li>Kenntnisse in der Sicherstellung von Software-Qualität durch
+Anwendung geeigneter Testverfahren</li>
+<li><strong>Optional</strong>: Umsetzung eines kleineren
+Software-Projektes als Team-Arbeit</li>
+</ul>
+<p>Die Bearbeitung des Abschlussprojektes kann als
+<strong>Einzelleistung</strong> oder als <strong>Zweier-Team</strong>
+erfolgen. Bei Abgabe einer Gruppenleistung müssen die einzelnen
+Leistungen in der Ausarbeitung nicht getrennt dargestellt werden. In
+diesem Fall erhalten beide Team-Mitglieder die gleiche Note.</p>
+<h3 id="tool-chain">Tool-Chain</h3>
+<p>Sie können ihr Projekt mit den Programmiersprachen
+<strong>Java</strong> oder **Go* realisieren. Der Schwerpunkt des Moduls
+liegt im Bereich der Backend-Entwicklung; dieses sollte sich auch in
+ihrer Abgabe widerspiegeln. Wenn Sie ein Frontend mit React oder Angular
+ergänzen möchten, dann wird das wohlwollend in der Bewertung
+berücksichtigt. Ein aufwendiges Frontend kann allerdings keine Defizite
+im Backend ausgleichen.</p>
+<p>Darüber hinaus empfiehlt es sich, Techniken zur Sourcode-Verwaltung
+und zum strukturierten Logging einzusetzen:</p>
+<ul>
+<li>GIT als Versionskontrollsystem bzw. eine Web-Plattform wie <a
+href="https://www.github.com">Github</a> oder <a
+href="https://www.codeberg.org">Codeberg</a></li>
+<li>Bei Gruppenarbeit: ein System zur Abstimmung innerhalb des Teams wie
+bspw. <strong>Discord</strong> oder <strong>Mattermost</strong></li>
+</ul>
+<h3 id="abgabe">Abgabe</h3>
+<p>Die Abgabe ihres Projektes kann über ihre Repository-URL oder über
+den Abgabeordner im <a href="https://www.th-owl.de/ecampus">Ilias</a>
+erfolgen. Es gilt:</p>
+<ul>
+<li>Das abgegebene Projekt muss <strong>kompilier-</strong> und
+<strong>lauffähig</strong> sein.</li>
+<li>Das Projekt kann über ein Buildsystem wie bspw.
+<strong>Maven</strong> oder <strong>Gradle</strong> gebaut und getestet
+werden.</li>
+<li>Falls Sie externe Abhängigkeiten haben, fügen Sie ihrem Projekt eine
+Installationsanweisung bei. Verwenden Sie kein externes
+<strong>MySQL</strong> oder gar <strong>PHPMyAdmin</strong>. Falls es
+unbedingt MySQL sein soll, können Sie H2 im <a
+href="http://www.h2database.com/html/features.html#compatibility">MySQL
+Compatibility mode</a> betreiben.</li>
+</ul>
+<h3 id="projektthemen">Projektthemen</h3>
+<p>Im Ilias finden Sie Projektvorschläge, die Sie als Team bis maximal 3
+Entwicklerinnen und Entwickler umsetzen können.</p>
+<p>Nach <strong>Absprache</strong> dürfen Sie gern eigene Vorschläge
+implementieren.</p>
+<h2 id="verwendung-des-beispielprojektes">Verwendung des
+Beispielprojektes</h2>
+<h3 id="umfang">Umfang</h3>
+<p>Im vorliegenden Template sind alle Techniken eingesetzt, die im Laufe
+des Semesters erprobt wurden. Damit entfällt der Konfigurationsaufwand
+und Sie können direkt mit der Implementierung starten. Eingebunden
+sind:</p>
+<ul>
+<li>Spring Boot Basissystem (Dependency Injection,
+<code>@autowired</code>)</li>
+<li>Spring Web (HTTP-Unterstützung <code>@Controller</code>,
+REST-API)</li>
+<li>Spring JPA (automatisierte Objektspeicherung in SQL-Datenbank
+<code>@Entity</code>)</li>
+<li>Lombok (Verzicht auf Getter/Setter/isEqual etc.)</li>
+<li>SLF4J (Strukturiertes Logging)</li>
+<li>Thymeleaf (Interarktives Web-Frontend mit HTML-Markup)</li>
+</ul>
+<h3 id="compile-and-test">Compile and test</h3>
+<p>Nach dem Auspacken des Projektes können Sie die Übersetzung mit
+<code>mvn install</code> anstoßen. Nach dem Durchführen aller Unit-Tests
+wird im Ordner <em>target</em> ein lauffähiges Java-Archiv (Typ:
+<em>war</em>) angelegt.</p>
+<h3 id="start-der-web-anwendung">Start der Web-Anwendung</h3>
+<p>Die gesamte Anwendung kann innerhalb von VS.Code mit “Project: Run”
+oder der Funktionstaste <strong>F5</strong> gestartet werden. In der
+Konsole können Sie es über <code>mvn spring-boot:run</code>
+ausführen.</p>
+<p>Anschließend können Sie mit <a
+href="http://localhost:8080/user">http://localhost:8080/user</a> auf die
+Webseite zugreifen. Diese URL verwendet die Controller-Klasse
+<code>de.thowl.prog3.exam.web.gui.UserFormController</code></p>
+<h3 id="zugriff-auf-den-datenbank-server">Zugriff auf den
+Datenbank-Server</h3>
+<p>Beim Starten eines Unit-Tests oder beim Ausführen der Web-Anwendung
+wird der Datenbank-Server mitgestartet. Sie können anschließend über das
+Web-Frontend auf den DB-Server zugreifen, die URL lautet:</p>
+<p><a
+href="http://localhost:8080/h2-console">http://localhost:8080/h2-console</a></p>
+<p>Die benötigten Zugangsdaten (Username = sa, Password = ““) finden Sie
+in der Datei
+<code>src/main/resources/application-context.xml</code>.</p>
+<h3 id="zugriff-rest-api">Zugriff REST-API</h3>
+<p>Das Projekt stellt auch eine Mini-Implementierung einer
+REST-Schnittstelle zur Verfügung. Die URL lauten:</p>
+<ul>
+<li><a href="http://localhost:8080/api/v1/users/">User service</a>: Base
+URL, bound to
+<code>de.thowl.prog3.exam.web.api.UserController</code></li>
+<li><a href="http://localhost:8080/api-docs">API docs</a>: API
+documentation in JSON format. Used to autogenerate client software.</li>
+<li><a href="http://localhost:8080/swagger-ui/index.html">Swagger
+API</a>: Interactive Swagger API documentation. Used to explore and to
+test the actual API endpoints.</li>
+</ul>
+<hr>
+</article>
+</main>
+</body>
+</html>
