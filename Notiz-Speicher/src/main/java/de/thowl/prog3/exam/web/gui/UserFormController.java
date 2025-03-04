@@ -53,6 +53,26 @@ public class UserFormController {
         log.debug("entering showProfileForm");
         return "profile";
     }
+    @GetMapping("/user/settings")
+    public String showSettingsForm() {
+        log.debug("entering showSettingsForm");
+        return "settings";
+    }
+    @GetMapping("/user/search")
+    public String showSearchForm() {
+        log.debug("entering showSearchForm");
+        return "search";
+    }
+    @GetMapping("/user/favorites")
+    public String showFavoritesForm() {
+        log.debug("entering showFavoritesForm");
+        return "favorites";
+    }
+    @GetMapping("/user/documents")
+    public String showDocumentsForm() {
+        log.debug("entering showDocumentsForm");
+        return "documents";
+    }
 
     @PostMapping("/user")
     public String processUserForm(Model model, UserForm formdata) {
