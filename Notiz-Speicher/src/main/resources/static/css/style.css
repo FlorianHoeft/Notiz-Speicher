@@ -1,22 +1,23 @@
 /* Standard Sidebar (15% Breite) */
 .sidebar {
-    width: 225px; /* Feste Breite */
+    width: 225px !important; /* Feste Breite */
     height: 100vh; /* Ganze Höhe des Bildschirms */
     background-color: #2c3e50; /* Blau */
     position: fixed;
     top: 0;
     left: 0;
     padding: 20px;
-    transition: width 0.5s ease-in-out; /* Animation */
+    transition: width 0.3s ease-in-out; /* Animation */
     color: white;
     display: flex; /* Flexbox aktivieren */
     flex-direction: column; /* Vertikale Anordnung */
+    box-sizing: content-box !important;
 }
 
 
 /* Wenn minimiert (5% Breite) */
 .sidebar.minimized {
-    width: 25px;
+    width: 25px !important;
 }
 /* Wenn minimiert: Nur Icons anzeigen, Text ausblenden */
 .sidebar.minimized ul li a {
@@ -79,13 +80,13 @@
     left: 60px; /* Abstand vom linken Rand */
     width: 200px;
     z-index: 1000; /* Button über der Sidebar */
-    transition: all 0s ease;
+    transition: all 0.3s ease
 }
 /* Minimiertes Logo: Knapp unterhalb des Toggle-Buttons */
 #logo.minimized {
     top: 70px;      /* Beispiel: knapp unter dem Toggle-Button */
-    left: 10px;     /* Neue Position */
-    width: 50px;    /* Kleinere Breite */
+    left: 15px;     /* Neue Position */
+    width: 40px;    /* Kleinere Breite */
 }
 
 /* Sicherstellen, dass der Link um das Logo keine Unterstreichung hat */
@@ -99,10 +100,11 @@
 }
 /* Hauptinhalt direkt neben der Sidebar */
 .content {
+    flex-grow: 1;
     margin-left: 250px; /* Gleiche Breite wie die Sidebar */
     padding: 20px;
     margin-top: 80px; /* Abstand vom oberen Rand (bewegt sich mit der Sidebar) */
-    transition: margin-left 0.5s ease-in-out, margin-top 0.5s ease-in-out; /* Animation für Sidebar-Einblendung und Verschiebung */
+    transition: margin-left 0.3s ease-in-out, margin-top 0.3s ease-in-out; /* Animation für Sidebar-Einblendung und Verschiebung */
 }
 
 /* Wenn Sidebar minimiert wird */
@@ -149,4 +151,9 @@
     width: calc(100% - 40px); /* Volle Breite minus Padding der Sidebar (20px links + 20px rechts) */
     padding: 0;
     list-style: none;
+}
+.container {
+    max-width: 100% !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
 }

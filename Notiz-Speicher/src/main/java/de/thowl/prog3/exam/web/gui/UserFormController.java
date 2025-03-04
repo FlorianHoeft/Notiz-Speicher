@@ -48,6 +48,12 @@ public class UserFormController {
         return "forgot-password";
     }
 
+    @GetMapping("/user/profile")
+    public String showProfileForm() {
+        log.debug("entering showProfileForm");
+        return "profile";
+    }
+
     @PostMapping("/user")
     public String processUserForm(Model model, UserForm formdata) {
         log.debug("entering processUserForm");
