@@ -30,10 +30,15 @@ public class Note {
     private String title;
 
     @Column(name = "content")
-    @Size(min = 5, max = 300)
+    @Size(min = 1, max = 999)
     private String content;
 
     @Column(name = "category")
-    @Size(min = 5, max = 30)
+    @Size(min = 3, max = 30)
     private String category;
+
+    @Column(name = "favorite")
+    @Size(min = 1, max = 30)
+    private boolean favorite;
+
 }
