@@ -1,10 +1,6 @@
 package de.thowl.prog3.exam.storage.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +36,11 @@ public class Note {
     @Column(name = "favorite")
     @Size(min = 1, max = 30)
     private boolean favorite;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User userid;
+
+
 
 }

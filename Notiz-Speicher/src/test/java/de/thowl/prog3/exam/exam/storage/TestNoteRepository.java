@@ -8,7 +8,10 @@ import de.thowl.prog3.exam.storage.entities.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.List;
+import java.util.Optional;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,18 +30,30 @@ public class TestNoteRepository {
 
         Optional<Note> n = this.repository.findNoteById(noteid);
         assertTrue(n.isPresent(), "Unexpected empty result");
-        log.debug("Got user {}", n.get());
+        log.debug("Got Note {}", n.get());
         assertTrue(n.get().getTitle().equals("Erste_Notiz"), "Username is wrong");
     }
 
     @Test
     public void testGetNoteByTitle() {
-        log.info("Starting testGetUserByName");
+        log.info("Starting testGetNoteByName");
 
         Optional<Note> n = this.repository.findNoteByTitle("Erste_Notiz");
         assertTrue(n.isPresent(), "Unexpected empty result");
-        log.debug("Got user {}", n.get());
+        log.debug("Got Note {}", n.get());
         assertTrue(n.get().getTitle().equals("Erste_Notiz"), "Title is wrong");
         assertTrue(n.get().getId() == noteid, "noteid has wrong ID");
     }
+
+    @Test
+    public void testGetNoteByContent() {
+        log.info("Starting testGetNoteByName");
+
+        Optional<Note> n = this.repository.findNoteByContent("Notiz2 favo");
+        assertTrue(n.isPresent(), "Unexpected empty result");
+        log.debug("Got Note {}", n.get());
+        assertTrue(n.get().getTitle().equals("Notiz Nr2"), "Title is wrong");
+        assertTrue(n.get().getId() == 2, "noteid has wrong ID");
+    }
+
 }
