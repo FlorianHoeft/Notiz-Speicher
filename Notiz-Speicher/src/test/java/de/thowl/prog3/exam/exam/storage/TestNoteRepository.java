@@ -1,5 +1,6 @@
 package de.thowl.prog3.exam.exam.storage;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +56,18 @@ public class TestNoteRepository {
         log.debug("Got Note {}", n.get());
         assertTrue(n.get().getTitle().equals("Notiz Nr2"), "Title is wrong");
         assertTrue(n.get().getId() == 2, "noteid has wrong ID");
+    }
+
+    @Test
+    public void testGetNoteByFavorite() {
+        log.info("Starting testGetNoteByFavorite");
+
+        List<Note> n = this.repository.findNoteByFavorite(true);
+        assertFalse(n.isEmpty(), "Unexpected empty result");
+        for (Note note : n) {
+            log.debug("Got Note {}", note);
+        }
+
     }
 
 }
