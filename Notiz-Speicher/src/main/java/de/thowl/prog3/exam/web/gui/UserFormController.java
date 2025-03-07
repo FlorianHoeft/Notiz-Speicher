@@ -1,5 +1,7 @@
 package de.thowl.prog3.exam.web.gui;
 
+import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -7,15 +9,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 import de.thowl.prog3.exam.service.UserService;
 import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.web.gui.form.UserForm;
 import de.thowl.prog3.exam.web.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 public class UserFormController {
+
+    @Autowired
+    private NoteRepository repository;
 
     @Autowired
     @Qualifier("usermapper")
@@ -52,8 +60,11 @@ public class UserFormController {
         return "search";
     }
     @GetMapping("/user/favorites")
-    public String showFavoritesForm() {
+    public String showFavoritesForm(Model model) {
         log.debug("entering showFavoritesForm");
+        List<Note> n = this.repository.findNoteByFavorite(true);
+        model.addAttribute("n", n);
+        log.debug(n.get(0).getContent());
         return "favorites";
     }
     @GetMapping("/user/documents")

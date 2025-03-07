@@ -67,6 +67,7 @@ public class TestNoteRepository {
         for (Note note : n) {
             log.debug("Got Note {}", note);
         }
+        System.out.println(n.get(0).getContent());
 
     }
 
