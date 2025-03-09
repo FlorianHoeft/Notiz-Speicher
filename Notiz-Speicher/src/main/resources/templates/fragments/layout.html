@@ -29,7 +29,16 @@
         <ul class="bottom-items">
             <li class="bottom-item"><a th:href="@{/user/profile}" class="sidebar-link"><i class="fas fa-user"></i><span>Profil</span></a></li>
             <li class="bottom-item"><a th:href="@{/user/settings}" class="sidebar-link"><i class="fas fa-cog"></i><span>Einstellungen</span></a></li>
-            <li class="bottom-item"><a th:href="@{/user/logout}" class="sidebar-link"><i class="fas fa-sign-out-alt"></i><span>Abmelden</span></a></li>
+            <li class="bottom-item">
+                <a href="#" class="sidebar-link" onclick="if(confirmLogout()) document.getElementById('logoutForm').submit();">
+                    <i class="fas fa-sign-out-alt"></i><span>Abmelden</span>
+                </a>
+                <form id="logoutForm" th:action="@{/user/logout}" method="post" style="display: none;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </form>
+            </li>
+
+
         </ul>
     </div>
 

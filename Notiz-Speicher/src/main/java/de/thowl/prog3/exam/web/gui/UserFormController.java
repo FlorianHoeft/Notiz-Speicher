@@ -1,13 +1,19 @@
 package de.thowl.prog3.exam.web.gui;
 
+import de.thowl.prog3.exam.service.AuthService;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import java.util.Optional;
 
 
 import de.thowl.prog3.exam.service.UserService;
@@ -21,6 +27,11 @@ import java.util.List;
 @Slf4j
 @Controller
 public class UserFormController {
+    private final AuthService authService;
+
+    public UserFormController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Autowired
     private NoteRepository repository;
@@ -33,8 +44,16 @@ public class UserFormController {
     UserService svc;
 
     @GetMapping("/user")
-    public String showUserForm() {
+    public String showUserForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showUserForm");
+
+        String email = userDetails.getUsername();  // `getUsername()` liefert i.d.R. die E-Mail
+
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> model.addAttribute("user", user),
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
+
         return "user";
     }
 

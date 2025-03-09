@@ -45,3 +45,6 @@ function handleResize() {
         }
     }
 }
+function confirmLogout() {
+    return confirm("Möchtest du dich wirklich abmelden?");
+}
