@@ -45,4 +45,9 @@ public class NoteServiceImpl implements NoteService {
         }
         return result;
     }
+
+    public List<Note> getNoteByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
 }

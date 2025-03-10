@@ -3,12 +3,16 @@ package de.thowl.prog3.exam.exam.storage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Optional;
 
+import de.thowl.prog3.exam.service.NoteService;
 import de.thowl.prog3.exam.storage.entities.User;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,14 +21,20 @@ import java.util.Optional;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import lombok.extern.slf4j.Slf4j;
+
+
+
 @Slf4j
-@DataJpaTest
+@SpringBootTest
 public class TestNoteRepository {
 
     private static final int noteid = 1;
 
     @Autowired
     private NoteRepository repository;
+
+    @Autowired
+    private NoteService service;
 
     @Test
     public void testGetNoteByID() {
@@ -70,5 +80,18 @@ public class TestNoteRepository {
         System.out.println(n.get(0).getContent());
 
     }
+
+   @Test
+    public void testGetNoteByUserId() {
+        long usertestid=1L;
+        log.info("Starting testGetNoteByUserId");
+        List<Note> n = service.getNoteByUserId(usertestid);
+        assertFalse(n.isEmpty(), "Unexpected empty result");
+       for (Note note : n) {
+           log.debug("Got Note {}", note);
+       }
+    }
+
+
 
 }

@@ -11,4 +11,6 @@ public interface NoteService {
     public Note getNote(String title);
 
     public List<Note> getAllNotes();
+
+    List<Note> getNoteByUserId(Long userId);
 }

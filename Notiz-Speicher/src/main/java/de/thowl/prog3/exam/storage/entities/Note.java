@@ -38,8 +38,8 @@ public class Note {
     private boolean favorite;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private User userid;
+    @JoinColumn(name = "user_Id")
+    private User user;
 
 
 

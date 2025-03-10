@@ -49,4 +49,9 @@ public class NoteController {
         Note n = this.service.getNote(id);
         return this.mapper.map(n);
     }
+
+    @GetMapping("/user/{userId}")
+    public List<Note> getNoteByUserId(@PathVariable Long userId) {
+        return service.getNoteByUserId(userId);
+    }
 }
