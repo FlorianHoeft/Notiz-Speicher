@@ -12,10 +12,10 @@
         <h1>Dokumente</h1>
 
         <!-- Dokumentenliste -->
-        <div th:if="${#lists.isEmpty(documents)}">
+        <div th:if="${#lists.isEmpty(n)}">
             <p>Es sind noch keine Dokumente vorhanden.</p>
         </div>
-        <div th:if="${!#lists.isEmpty(documents)}">
+        <div th:if="${!#lists.isEmpty(n)}">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -26,11 +26,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="note : ${documents}">
-                    <td th:text="${note.id}"></td>
-                    <td th:text="${note.title}"></td>
-                    <td th:text="${note.category}"></td>
-                    <td th:text="${note.content}"></td>
+                <tr th:each="n : ${n}">
+                    <td th:text="${n.id}"></td>
+                    <td th:text="${n.title}"></td>
+                    <td th:text="${n.category}"></td>
+                    <td th:text="${n.content}"></td>
                 </tr>
                 </tbody>
             </table>

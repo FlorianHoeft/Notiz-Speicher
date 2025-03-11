@@ -1,6 +1,7 @@
 package de.thowl.prog3.exam.web.gui;
 
 import de.thowl.prog3.exam.service.AuthService;
+import de.thowl.prog3.exam.service.NoteService;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class UserFormController {
 
     @Autowired
     private NoteRepository repository;
+
+    @Autowired
+    private NoteService service;
 
     @Autowired
     @Qualifier("usermapper")
@@ -87,8 +91,11 @@ public class UserFormController {
         return "favorites";
     }
     @GetMapping("/user/documents")
-    public String showDocumentsForm() {
+    public String showDocumentsForm(Model model) {
+        long usertestid=1L;
         log.debug("entering showDocumentsForm");
+        List<Note> n = service.getNoteByUserId(usertestid);
+        model.addAttribute("n", n);
         return "documents";
     }
 
