@@ -1,7 +1,9 @@
 package de.thowl.prog3.exam.service;
 
 import de.thowl.prog3.exam.storage.entities.User;
+import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.UserRepository;
+import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import de.thowl.prog3.exam.web.api.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired private NoteRepository noteRepository;
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -50,6 +53,13 @@ public class AuthService {
      */
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    public void saveNote(Note note) {
+        if (note == null) {
+            throw new IllegalArgumentException("Note cannot be null");
+        }
+        noteRepository.save(note); // Speichert die Notiz (INSERT oder UPDATE)
     }
 
 }

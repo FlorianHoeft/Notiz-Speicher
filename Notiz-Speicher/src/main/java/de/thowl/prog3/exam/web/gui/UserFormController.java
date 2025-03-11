@@ -34,8 +34,7 @@ public class UserFormController {
         this.authService = authService;
     }
 
-    @Autowired
-    private NoteRepository repository;
+    @Autowired private NoteRepository noteRepository;
 
     @Autowired
     private NoteService service;
@@ -48,16 +47,18 @@ public class UserFormController {
     UserService svc;
 
     @GetMapping("/user")
-    public String showUserForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        log.debug("entering showUserForm");
+    public String showNotes(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        log.debug("entering showNotes");
+        if (userDetails == null) return "redirect:/user/login";
 
-        String email = userDetails.getUsername();  // `getUsername()` liefert i.d.R. die E-Mail
-
+        String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
-                user -> model.addAttribute("user", user),
+                user -> {
+                    model.addAttribute("user", user);
+                    model.addAttribute("notes", noteRepository.findByUserId(user.getId()));
+                },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );
-
         return "user";
     }
 
@@ -68,8 +69,14 @@ public class UserFormController {
     }
 
     @GetMapping("/user/profile")
-    public String showProfileForm() {
-        log.debug("entering showProfileForm");
+    public String showProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        log.debug("entering showProfile");
+        if (userDetails == null) return "redirect:/user/login";
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> model.addAttribute("user", user),
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
         return "profile";
     }
     @GetMapping("/user/settings")
@@ -83,11 +90,23 @@ public class UserFormController {
         return "search";
     }
     @GetMapping("/user/favorites")
-    public String showFavoritesForm(Model model) {
+    public String showFavoritesForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showFavoritesForm");
-        List<Note> n = this.repository.findNoteByFavorite(true);
-        model.addAttribute("n", n);
-        log.debug(n.get(0).getContent());
+        if (userDetails == null) return "redirect:/user/login";
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    List<Note> favorites = noteRepository.findNoteByFavorite(true); // musst noch angepasst werde. Es muss nach user gesucht werden
+                    model.addAttribute("favorites", favorites);
+                    if (!favorites.isEmpty()) {
+                        log.debug("First favorite note content: {}", favorites.get(0).getContent());
+                    } else {
+                        log.debug("No favorite notes found for user: {}", email);
+                    }
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
         return "favorites";
     }
     @GetMapping("/user/documents")

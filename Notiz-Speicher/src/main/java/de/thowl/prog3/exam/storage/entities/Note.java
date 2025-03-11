@@ -22,7 +22,7 @@ public class Note {
     private Long id;
 
     @Column(name = "title")
-    @Size(min = 5, max = 30)
+    @Size(min = 1, max = 50)
     private String title;
 
     @Column(name = "content")
@@ -30,11 +30,10 @@ public class Note {
     private String content;
 
     @Column(name = "category")
-    @Size(min = 3, max = 30)
+    @Size(min = 1, max = 30)
     private String category;
 
     @Column(name = "favorite")
-    @Size(min = 1, max = 30)
     private boolean favorite;
 
     @ManyToOne
