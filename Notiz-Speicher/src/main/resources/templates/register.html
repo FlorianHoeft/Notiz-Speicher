@@ -19,6 +19,20 @@
             cursor: pointer;
             color: #6c757d; /* Bootstrap Grau */
         }
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .requirement-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #dc3545; /* Rot = nicht erfüllt */
+        }
+        .requirement-indicator.valid {
+            background-color: #28a745; /* Grün = erfüllt */
+        }
     </style>
 </head>
 <body  class="d-flex justify-content-center align-items-center vh-100 bg-light">
@@ -26,10 +40,14 @@
     <img th:src="@{/img/thowl_logo.png}" alt="THOWL Logo" class="mb-4" style="max-width: 300px;">
     <div class="card p-5 shadow" style="max-width: 900px; width: 100%;">
         <h3 class="text-center">Erstelle einen Account</h3>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
         <form th:action="@{/user/register}" method="post">
             <div class="mb-4">
                 <label for="e-mail" class="form-label">E-Mail-Adresse</label>
-                <input type="text" id="e-mail" name="e-mail" class="form-control" required>
+                <input type="text" id="e-mail" name="e-mail" class="form-control" required oninput="validateForm()">
+                <small id="emailFeedback" class="text-danger d-none">Ungültige E-Mail-Adresse</small>
             </div>
             <div class="mb-4">
                 <label for="username" class="form-label">Benutzernamen</label>
@@ -38,13 +56,22 @@
             <div class="mb-4">
                 <label for="password" class="form-label">Passwort</label>
                 <div class="password-container">
-                    <input type="password" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" required oninput="validateForm()">
                     <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()">
                         <span class="material-icons">visibility</span>
                     </button>
                 </div>
+                <div class="progress mt-2">
+                    <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                </div>
+                <div id="progressBar"><div class="progress-fill"></div></div>
+                <small>Das Passwort muss folgende Anforderungen erfüllen:</small>
+                <div class="requirement"><div class="requirement-indicator" id="lengthIndicator"></div>Mindestens 8 Zeichen</div>
+                <div class="requirement"><div class="requirement-indicator" id="specialCharIndicator"></div>Mindestens 2 Sonderzeichen</div>
+                <div class="requirement"><div class="requirement-indicator" id="numberIndicator"></div>Mindestens 1 Zahl</div>
+                <div class="requirement"><div class="requirement-indicator" id="caseIndicator"></div>Groß- und Kleinbuchstaben</div>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Registrieren</button>
+            <button type="submit" id="registerButton" class="btn btn-primary w-100" disabled>Registrieren</button>
         </form>
         <a th:href="@{/user/login}" class="d-block text-center mt-4 text-decoration-none">Zurück</a>
     </div>
@@ -61,6 +88,36 @@
             passwordInput.type = 'password';
             icon.textContent = 'visibility';
         }
+    }
+
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('e-mail').value;
+
+        const lengthCheck = password.length >= 8;
+        const specialCharCheck = (password.match(/[^A-Za-z0-9]/g) || []).length >= 2;
+        const numberCheck = /[0-9]/.test(password); //\d
+        const caseCheck = /[a-z]/.test(password) && /[A-Z]/.test(password);
+
+        // Set the indicators
+        document.getElementById('lengthIndicator').classList.toggle('valid', lengthCheck);
+        document.getElementById('specialCharIndicator').classList.toggle('valid', specialCharCheck);
+        document.getElementById('numberIndicator').classList.toggle('valid', numberCheck);
+        document.getElementById('caseIndicator').classList.toggle('valid', caseCheck);
+
+        // Update the progress bar based on the fulfilled conditions
+        const fulfilledConditions = [lengthCheck, specialCharCheck, numberCheck, caseCheck].filter(Boolean).length;
+        const progressPercentage = (fulfilledConditions / 4) * 100;
+        document.querySelector('#progressBar .progress-fill').style.width = progressPercentage + '%';
+        document.getElementById('passwordStrengthBar').style.width = progressPercentage + '%';
+
+        // Validate the email address
+        const emailValid = email.includes('@') && email.includes('.') &&
+            (email.endsWith('.com') || email.endsWith('.de') || email.endsWith('.net') || email.endsWith('.org'));
+        document.getElementById('emailFeedback').classList.toggle('d-none', emailValid);
+
+        // Enable/disable register button based on form validity
+        registerButton.disabled = !(lengthCheck && specialCharCheck && numberCheck && caseCheck && emailValid);
     }
 </script>
 </body>

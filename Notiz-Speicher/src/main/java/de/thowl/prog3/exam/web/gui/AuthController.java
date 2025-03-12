@@ -68,6 +68,12 @@ public class AuthController {
                            @RequestParam("e-mail") String email,
                            RedirectAttributes redirectAttributes) {
         log.debug("Processing registration for user: {}", username);
+        boolean emailExists = authService.findUserByEmail(email).isPresent();
+        if (emailExists) {
+            // Wenn die E-Mail bereits vergeben ist, gib eine Fehlermeldung zurück
+            redirectAttributes.addFlashAttribute("error", "Die E-Mail-Adresse ist bereits vergeben.");
+            return "redirect:/user/register";
+        }
         boolean registerSuccess = authService.register(username, password, email);
         if (registerSuccess) {
             log.debug("Registration was successful for user: {}", username);
