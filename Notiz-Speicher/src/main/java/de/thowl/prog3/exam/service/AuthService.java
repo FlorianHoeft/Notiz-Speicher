@@ -62,4 +62,33 @@ public class AuthService {
         noteRepository.save(note); // Speichert die Notiz (INSERT oder UPDATE)
     }
 
+    /**
+     * Ändert das Passwort eines Benutzers, falls das aktuelle Passwort korrekt ist.
+     * @param userId Die ID des Benutzers.
+     * @param currentPassword Das aktuelle Passwort zur Verifizierung.
+     * @param newPassword Das neue Passwort, das gesetzt werden soll.
+     * @return true, wenn das Passwort erfolgreich geändert wurde; false, wenn das aktuelle Passwort falsch war.
+     */
+    public boolean changePassword(Long userId, String currentPassword, String newPassword) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            log.warn("Benutzer mit ID {} nicht gefunden", userId);
+            return false;
+        }
+
+        User user = optionalUser.get();
+
+        // Überprüfen, ob das aktuelle Passwort korrekt ist
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            log.warn("Falsches aktuelles Passwort für Benutzer {}", user.getEmail());
+            return false;
+        }
+
+        // Neues Passwort setzen und speichern
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        log.info("Passwort erfolgreich geändert für Benutzer: {}", user.getEmail());
+        return true;
+    }
 }

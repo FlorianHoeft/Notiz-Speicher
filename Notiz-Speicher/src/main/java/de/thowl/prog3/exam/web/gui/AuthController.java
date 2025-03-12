@@ -12,8 +12,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,5 +84,31 @@ public class AuthController {
             log.debug("Registration was not done for user: {}", username);
             return "redirect:/user/register";
         }
+    }
+
+    @PostMapping("/user/newPassword")
+    public String changePassword(@AuthenticationPrincipal UserDetails userDetails,
+                                 Model model,
+                                 @RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmPassword) {
+        log.debug("Entering changePassword");
+
+        Optional<User> optionalUser = authService.findUserByEmail(userDetails.getUsername());
+        if (optionalUser.isEmpty()) {
+            model.addAttribute("error", "Benutzer nicht gefunden.");
+            return "redirect:/user/profile";
+        }
+
+        User user = optionalUser.get();
+
+        // Passwort ändern über den AuthService
+        if (!authService.changePassword(user.getId(), currentPassword, newPassword)) {
+            model.addAttribute("error", "Das aktuelle Passwort ist falsch.");
+            return "redirect:/user/profile";
+        }
+
+        model.addAttribute("success", "Passwort erfolgreich geändert.");
+        return "redirect:/user/profile";
     }
 }
