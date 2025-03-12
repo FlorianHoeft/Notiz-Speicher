@@ -13,34 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "notes")
+@Table(name = "category")
 
-public class Note{
+public class Category {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name = "title")
-    @Size(min = 1, max = 50)
-    private String title;
-
-    @Column(name = "content")
-    @Size(min = 1, max = 999)
-    private String content;
-
-    @Column(name = "favorite")
-    private boolean favorite;
+    @Column(name = "name")
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "user_Id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-
 
 
 }

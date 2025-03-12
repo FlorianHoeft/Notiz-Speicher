@@ -8,3 +8,6 @@
 /dataSources.local.xml
 /.idea/
 /Notiz-Speicher/target/
+/data/
+*.mv.db
+*.trace.db
