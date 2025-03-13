@@ -4,6 +4,7 @@
     <title>Profil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> //toggle
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -13,7 +14,6 @@
         <div th:if="${param.success}" class="alert alert-success">
             Passwort wurde erfolgreich geändert.
         </div>
-
         <!-- Fehlermeldung -->
         <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
@@ -52,31 +52,43 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                            <span th:text="${error}"></span>
-                        </div>
                         <form th:action="@{/user/newPassword}" method="post">
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <label for="currentPassword" class="form-label">Aktuelles Passwort</label>
                                 <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                                <button type="button" class="password-toggle-btn" onclick="togglePassword('currentPassword')">
+                                    <span class="material-icons">visibility</span>
+                                </button>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <label for="newPassword" class="form-label">Neues Passwort</label>
-                                <input type="password" class="form-control" id="newPassword"  name="newPassword" oninput="validateForm()">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" oninput="validateForm()">
+                                <button type="button" class="password-toggle-btn" onclick="togglePassword('newPassword')">
+                                    <span class="material-icons">visibility</span>
+                                </button>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <label for="confirmPassword" class="form-label">Neues Passwort bestätigen</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" oninput="validateForm()">
+                                <button type="button" class="password-toggle-btn" onclick="togglePassword('confirmPassword')">
+                                    <span class="material-icons">visibility</span>
+                                </button>
                             </div>
+                            <!-- Fortschrittsleiste -->
                             <div class="progress mt-2">
                                 <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
                             </div>
-                            <div id="progressBar"><div class="progress-fill"></div></div>
+
+                            <!-- Passwort-Anforderungen -->
                             <small>Das Passwort muss folgende Anforderungen erfüllen:</small>
                             <div class="requirement"><div class="requirement-indicator" id="lengthIndicator"></div>Mindestens 8 Zeichen</div>
                             <div class="requirement"><div class="requirement-indicator" id="specialCharIndicator"></div>Mindestens 2 Sonderzeichen</div>
                             <div class="requirement"><div class="requirement-indicator" id="numberIndicator"></div>Mindestens 1 Zahl</div>
                             <div class="requirement"><div class="requirement-indicator" id="caseIndicator"></div>Groß- und Kleinbuchstaben</div>
-                            <button type="submit" id="safePasswordButton" class="btn btn-primary" disabled>Passwort speichern</button>
+
+                            <button type="submit" id="safePasswordButton" class="btn btn-primary mt-3" disabled>
+                                Passwort speichern
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -90,6 +102,33 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/script.js}"></script>
     <script>
+        function togglePassword(fieldId) {
+            console.log('togglePassword aufgerufen für:', fieldId);
+            const input = document.getElementById(fieldId);
+            if (!input) {
+                console.error('Input-Feld nicht gefunden:', fieldId);
+                return;
+            }
+            const button = input.nextElementSibling;
+            if (!button || !button.classList.contains('password-toggle-btn')) {
+                console.error('Toggle-Button nicht gefunden für:', fieldId);
+                return;
+            }
+            const icon = button.querySelector('.material-icons');
+            if (!icon) {
+                console.error('Icon nicht gefunden für:', fieldId);
+                return;
+            }
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
         function validateForm() {
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
