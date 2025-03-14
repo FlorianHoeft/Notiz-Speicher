@@ -12,10 +12,10 @@
         <h1>Favoriten</h1>
 
         <!-- Favoritenliste -->
-        <div th:if="${#lists.isEmpty(n)}">
+        <div th:if="${#lists.isEmpty(favorites)}">
             <p>Du hast noch keine Favoriten hinzugefügt.</p>
         </div>
-        <div th:if="${!#lists.isEmpty(n)}">
+        <div th:if="${!#lists.isEmpty(favorites)}">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -26,11 +26,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="n : ${n}">
-                    <td th:text="${n.id}"></td>
-                    <td th:text="${n.title}"></td>
-                    <td th:text="${n.category}"></td>
-                    <td th:text="${n.content}"></td>
+                <tr th:each="n : ${favorites}">
+                    <td th:text="${favorites.id}"></td>
+                    <td th:text="${favorites.title}"></td>
+                    <td th:text="${favorites.category.name}"></td>
+                    <td th:text="${favorites.content}"></td>
 
                 </tr>
                 </tbody>

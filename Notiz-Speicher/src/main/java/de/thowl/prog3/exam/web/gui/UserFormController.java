@@ -2,6 +2,8 @@ package de.thowl.prog3.exam.web.gui;
 
 import de.thowl.prog3.exam.service.AuthService;
 import de.thowl.prog3.exam.service.NoteService;
+import de.thowl.prog3.exam.storage.entities.Category;
+import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,12 +94,16 @@ public class UserFormController {
     @GetMapping("/user/favorites")
     public String showFavoritesForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showFavoritesForm");
+
         if (userDetails == null) return "redirect:/user/login";
 
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    List<Note> favorites = noteRepository.findNoteByFavorite(true); // musst noch angepasst werde. Es muss nach user gesucht werden
+                    System.out.println("Hallo hier hier hier"+user.getId());//Tests um user zu überprüfen
+                    //List<Note> favorites = noteRepository.findNoteByFavorite(true); // Veraltet
+                    List<Note> favorites = noteRepository.findNoteByFavoriteAndUserId(true, user.getId());
+                    System.out.println("Hallo hallo hallo hierhalloooo   "+favorites.size()); //Test für notizliste
                     model.addAttribute("favorites", favorites);
                     if (!favorites.isEmpty()) {
                         log.debug("First favorite note content: {}", favorites.get(0).getContent());
@@ -110,11 +116,18 @@ public class UserFormController {
         return "favorites";
     }
     @GetMapping("/user/documents")
-    public String showDocumentsForm(Model model) {
-        long usertestid=1L;
-        log.debug("entering showDocumentsForm");
-        List<Note> n = service.getNoteByUserId(usertestid);
-        model.addAttribute("n", n);
+    public String showDocumentsForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+        user -> {
+            System.out.println("Hallo hier hier hier"+user.getId()); //Tests um user zu überprüfen
+            log.debug("entering showDocumentsForm");
+            List<Note> n = service.getNoteByUserId(user.getId());
+            model.addAttribute("n", n);
+        },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
         return "documents";
     }
 

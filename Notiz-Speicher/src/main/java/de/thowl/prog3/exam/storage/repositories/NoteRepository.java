@@ -22,6 +22,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     public List<Note> findNoteByFavorite(boolean favorite);
 
+    public List<Note> findNoteByFavoriteAndUserId(boolean favorite, long userId);
+
     public List<Note> findByUserId(Long userId);
 
 

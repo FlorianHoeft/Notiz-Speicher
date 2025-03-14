@@ -29,7 +29,7 @@
                 <tr th:each="n : ${n}">
                     <td th:text="${n.id}"></td>
                     <td th:text="${n.title}"></td>
-                    <td th:text="${n.category}"></td>
+                    <td th:text="${n.category.name}"></td>
                     <td th:text="${n.content}"></td>
                 </tr>
                 </tbody>

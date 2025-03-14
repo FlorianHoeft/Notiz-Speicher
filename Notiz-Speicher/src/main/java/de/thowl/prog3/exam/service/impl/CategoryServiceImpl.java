@@ -49,6 +49,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     public List<Category> getCategoryByUserId(Long userId) {
-        return repository.findByUserId(userId);
+        return repository.findCategoryByUserId(userId);
     }
 }
