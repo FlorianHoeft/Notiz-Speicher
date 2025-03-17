@@ -27,10 +27,10 @@
                 </thead>
                 <tbody>
                 <tr th:each="n : ${favorites}">
-                    <td th:text="${favorites.id}"></td>
-                    <td th:text="${favorites.title}"></td>
-                    <td th:text="${favorites.category.name}"></td>
-                    <td th:text="${favorites.content}"></td>
+                    <td th:text="${n.id}"></td>
+                    <td th:text="${n.title}"></td>
+                    <td th:text="${n.category.name}"></td>
+                    <td th:text="${n.content}"></td>
 
                 </tr>
                 </tbody>

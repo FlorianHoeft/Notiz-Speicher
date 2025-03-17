@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.Optional;
 
+import de.thowl.prog3.exam.service.AuthService;
 import de.thowl.prog3.exam.service.NoteService;
 import de.thowl.prog3.exam.storage.entities.User;
 import org.junit.jupiter.api.Test;
@@ -21,20 +22,29 @@ import java.util.Optional;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 
 
 
 @Slf4j
 @SpringBootTest
 public class TestNoteRepository {
+    private final AuthService authService;
 
     private static final int noteid = 1;
+
 
     @Autowired
     private NoteRepository repository;
 
     @Autowired
     private NoteService service;
+
+    public TestNoteRepository(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Test
     public void testGetNoteByID() {
@@ -74,21 +84,39 @@ public class TestNoteRepository {
         log.info("Starting testGetNoteByFavorite");
 
         List<Note> n = this.repository.findNoteByFavorite(true);
-        //assertFalse(n.isEmpty(), "Unexpected empty result");
+        assertFalse(n.isEmpty(), "Unexpected empty result");
         for (Note note : n) {
             log.debug("Got Note {}", note);
         }
-        System.out.println(n.get(0).getContent());
+        System.out.println("->>> "+n.size());
 
     }
 
     @Test
     public void testGetNoteByUserId() {
+        long usertest= 1;
         log.info("Starting testGetNoteByUserId");
-        List<Note> n = service.getNoteByUserId(1L);
+        List<Note> n = service.getNoteByUserId(usertest);
         for (Note note : n) {
             log.debug("Got Note {}", n);
         }
+        System.out.println("->>> "+n.size());
+    }
+
+    @Test
+    public void testSaveNote(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        log.info("Starting testSaveNote");
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    System.out.println("Hallo hier hier hier"+user.getId()); //Tests um user zu überprüfen
+                    log.debug("entering showDocumentsForm");
+                    List<Note> n = service.getNoteByUserId(user.getId());
+                    model.addAttribute("n", n);
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
     }
 
 

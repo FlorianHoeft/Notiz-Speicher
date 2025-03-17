@@ -110,6 +110,7 @@ public class UserFormController {
                     } else {
                         log.debug("No favorite notes found for user: {}", email);
                     }
+
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );
