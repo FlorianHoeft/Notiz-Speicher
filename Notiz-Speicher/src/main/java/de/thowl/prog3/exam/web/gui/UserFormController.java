@@ -90,15 +90,16 @@ public class UserFormController {
         if (userDetails == null) return "redirect:/user/login";
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
-                user -> model.addAttribute("user", user),
+                user -> {
+                    model.addAttribute("user", user);
+
+                    // Anzahl der Notizen zur Statistik hinzufügen
+                    int notesCount = noteRepository.countByUser(user);
+                    model.addAttribute("notesCount", notesCount);
+                },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );
         return "profile";
-    }
-    @GetMapping("/user/settings")
-    public String showSettingsForm() {
-        log.debug("entering showSettingsForm");
-        return "settings";
     }
     @GetMapping("/user/search")
     public String showSearchForm() {

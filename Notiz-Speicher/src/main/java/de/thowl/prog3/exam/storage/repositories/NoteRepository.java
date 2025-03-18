@@ -31,4 +31,5 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     @Query("SELECT n FROM Note n WHERE n.user.id = :userId")
     List<Note> findNotesByUserId(@Param("userId") Long userId);
 
+    int countByUser(User user);
 }

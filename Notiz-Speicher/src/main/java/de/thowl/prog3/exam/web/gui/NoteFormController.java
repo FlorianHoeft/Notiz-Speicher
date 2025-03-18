@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@Slf4j
 @Controller
 public class NoteFormController {
 
@@ -43,6 +42,18 @@ public class NoteFormController {
 
     @Autowired
     NoteService svc;
+    /**
+     * Stellt den Benutzernamen global für alle Templates bereit.
+     *
+     * @param userDetails Der eingeloggte Benutzer.
+     * @return Der Benutzername oder "Gast", falls nicht eingeloggt.
+     */
+    @ModelAttribute("username")
+    public String addUserToModel(@AuthenticationPrincipal UserDetails userDetails) {
+        return authService.findUserByEmail(userDetails.getUsername())
+                .map(User::getName)
+                .orElse("Gast");
+    }
 
     @GetMapping("/user/notes/new")
     public String showNewNoteForm(Model model) {

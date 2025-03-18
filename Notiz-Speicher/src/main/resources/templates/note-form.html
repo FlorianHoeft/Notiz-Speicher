@@ -31,6 +31,7 @@
                     <label for="favorite" class="form-check-label">Favorit</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Speichern</button>
+                <button type="button" class="btn btn-danger ms-3" onclick="history.back()">Zurück</button>
             </form>
         </div>
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>

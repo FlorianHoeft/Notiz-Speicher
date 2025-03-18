@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,10 @@ public class NoteServiceImpl implements NoteService {
         return repository.findByUserId(userId);
     }
 
+    @Override
+    public int countNotesByUser(User user) {
+        log.debug("entering countNotesByUser(user={})", user);
+        return repository.countByUser(user);
+    }
 
 }

@@ -3,6 +3,7 @@ package de.thowl.prog3.exam.service;
 import java.util.List;
 
 import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.entities.User;
 
 public interface NoteService {
 
@@ -13,4 +14,6 @@ public interface NoteService {
     public List<Note> getAllNotes();
 
     List<Note> getNoteByUserId(Long userId);
+
+    int countNotesByUser(User user);
 }
