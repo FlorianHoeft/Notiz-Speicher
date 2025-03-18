@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .logoutUrl("/user/logout")
                         .logoutSuccessUrl("/user/login?logout=true")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")  // Spring Session-Cookie löschen
+                        .deleteCookies("JSESSIONID", "remember-me")  // Löscht das Session-Cookie und das "remember-me" Cookie
                         .clearAuthentication(true)
                 )
                 .formLogin(form -> form

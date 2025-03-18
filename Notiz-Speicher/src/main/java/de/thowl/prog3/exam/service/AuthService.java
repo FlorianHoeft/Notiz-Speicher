@@ -91,4 +91,21 @@ public class AuthService {
         log.info("Passwort erfolgreich geändert für Benutzer: {}", user.getEmail());
         return true;
     }
+
+    /**
+     * Löscht einen Benutzer aus der Datenbank.
+     * @param userId Die ID des zu löschenden Benutzers.
+     * @return true, wenn der Benutzer erfolgreich gelöscht wurde, ansonsten false.
+     */
+    public boolean deleteUser(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            log.warn("Benutzer mit ID {} nicht gefunden", userId);
+            return false;
+        }
+
+        userRepository.deleteById(userId);
+        log.info("Benutzer mit ID {} wurde erfolgreich gelöscht", userId);
+        return true;
+    }
 }

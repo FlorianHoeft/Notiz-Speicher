@@ -26,9 +26,13 @@
 <body class="d-flex justify-content-center align-items-center vh-100 bg-light">
 <div class="text-center">
     <img th:src="@{/img/thowl_logo.png}" alt="THOWL Logo" class="mb-4" style="max-width: 300px;">
+    <div th:if="${param.profileDeleted}" class="alert alert-success" style="font-size: 0.875rem;">
+        Dein Profil wurde erfolgreich gelöscht
+    </div>
     <div class="card p-5 shadow" style="max-width: 900px; width: 100%;">
         <h3 class="text-center">Login</h3>
         <form th:action="@{/user/login}" method="post">
+
             <div class="mb-4">
                 <label for="email" class="form-label">E-Mail Adresse</label>
                 <input type="text" id="email" name="username" class="form-control" required>

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.Optional;
 
@@ -47,6 +48,19 @@ public class UserFormController {
 
     @Autowired
     UserService svc;
+
+    /**
+     * Stellt den Benutzernamen global für alle Templates bereit.
+     *
+     * @param userDetails Der eingeloggte Benutzer.
+     * @return Der Benutzername oder "Gast", falls nicht eingeloggt.
+     */
+    @ModelAttribute("username")
+    public String addUserToModel(@AuthenticationPrincipal UserDetails userDetails) {
+        return authService.findUserByEmail(userDetails.getUsername())
+                .map(User::getName)
+                .orElse("Gast");
+    }
 
     @GetMapping("/user")
     public String showNotes(@AuthenticationPrincipal UserDetails userDetails, Model model) {

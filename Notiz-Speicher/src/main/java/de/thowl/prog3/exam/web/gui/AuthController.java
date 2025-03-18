@@ -111,4 +111,22 @@ public class AuthController {
         model.addAttribute("success", "Passwort erfolgreich geändert.");
         return "redirect:/user/profile";
     }
+
+    /**
+     * Löscht den angemeldeten Benutzer und leitet zur Startseite um.
+     * @param userDetails Die Details des angemeldeten Benutzers.
+     * @param redirectAttributes Zum Übermitteln von Erfolgsmeldungen.
+     * @return Weiterleitung zur Startseite.
+     */
+    @PostMapping("/user/delete")
+    public String deleteUser(@AuthenticationPrincipal UserDetails userDetails,
+                             RedirectAttributes redirectAttributes) {
+        authService.findUserByEmail(userDetails.getUsername())
+                .ifPresent(user -> {
+                    if(authService.deleteUser(user.getId())) {
+                        redirectAttributes.addFlashAttribute("success", "Benutzer wurde erfolgreich gelöscht.");
+                    }
+                });
+        return "redirect:/user/login?profileDeleted=true";
+    }
 }

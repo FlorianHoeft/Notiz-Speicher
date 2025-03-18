@@ -27,7 +27,7 @@
             <li><a th:href="@{/user/search}" class="sidebar-link"><i class="fas fa-search"></i><span>Suchen</span></a></li>
         </ul>
         <ul class="bottom-items">
-            <li class="bottom-item"><a th:href="@{/user/profile}" class="sidebar-link"><i class="fas fa-user"></i><span>Profil</span></a></li>
+            <li class="bottom-item"><a th:href="@{/user/profile}" class="sidebar-link"><i class="fas fa-user"></i><span th:text="${username}">Profil</span></a></li>
             <li class="bottom-item"><a th:href="@{/user/settings}" class="sidebar-link"><i class="fas fa-cog"></i><span>Einstellungen</span></a></li>
             <li class="bottom-item">
                 <a href="#" class="sidebar-link" onclick="if(confirmLogout()) document.getElementById('logoutForm').submit();">
