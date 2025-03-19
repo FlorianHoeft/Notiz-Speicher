@@ -22,7 +22,7 @@ public class Note{
     private Long id;
 
     @Column(name = "title")
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 20)
     private String title;
 
     @Column(name = "content")

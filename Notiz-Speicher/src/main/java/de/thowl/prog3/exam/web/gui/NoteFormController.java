@@ -29,6 +29,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 
 @Controller
@@ -90,6 +93,18 @@ public class NoteFormController {
             }
             authService.saveNote(note); // Speichert sowohl neue als auch bearbeitete Notizen
         });
+        return "redirect:/user";
+    }
+
+    @PostMapping("/user/notes/{id}/delete")
+    public String deleteNote(@PathVariable Long id) {
+        System.out.println("DeleteNote aufgerufen mit ID: " + id); // ➤ Debug-Lo
+        Optional<Note> optionalNote = noteRepository.findById(id);
+        if (optionalNote.isEmpty()) {
+            return "redirect:/user?error=NotizNichtGefunden";
+        }
+        Note note = optionalNote.get();
+        noteRepository.delete(note);
         return "redirect:/user";
     }
 }

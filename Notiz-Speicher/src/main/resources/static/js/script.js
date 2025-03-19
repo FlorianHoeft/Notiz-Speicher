@@ -48,3 +48,9 @@ function handleResize() {
 function confirmLogout() {
     return confirm("Möchtest du dich wirklich abmelden?");
 }
+document.querySelectorAll('.btn-danger').forEach(button => {
+    button.addEventListener('click', function() {
+        const noteId = this.getAttribute('data-id');
+        document.querySelector('#deleteModal form').setAttribute('action', `/user/notes/${noteId}/delete`);
+    });
+});
