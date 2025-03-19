@@ -26,6 +26,13 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     public List<Note> findByUserId(Long userId);
 
+    @Query("SELECT n FROM Note n WHERE n.user.id = :userId " +
+                  "AND (:keyword IS NULL OR LOWER(n.content) LIKE LOWER(CONCAT('%', :keyword, '%'))OR :keyword IS NULL OR LOWER(n.title) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+                     "AND (:categoryId IS NULL OR n.category.id = :categoryId)")
+    List<Note> findByUserIdAndFilters(@Param("userId") Long userId,
+                                      @Param("keyword") String keyword,
+                                      @Param("categoryId") Long categoryId);
+
 
 
     @Query("SELECT n FROM Note n WHERE n.user.id = :userId")

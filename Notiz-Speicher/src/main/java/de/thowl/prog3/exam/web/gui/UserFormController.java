@@ -1,6 +1,7 @@
 package de.thowl.prog3.exam.web.gui;
 
 import de.thowl.prog3.exam.service.AuthService;
+import de.thowl.prog3.exam.service.CategoryService;
 import de.thowl.prog3.exam.service.NoteService;
 import de.thowl.prog3.exam.storage.entities.Category;
 import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
@@ -25,6 +26,7 @@ import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.web.gui.form.UserForm;
 import de.thowl.prog3.exam.web.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -41,6 +43,9 @@ public class UserFormController {
 
     @Autowired
     private NoteService service;
+
+    @Autowired
+    private CategoryService cservice;
 
     @Autowired
     @Qualifier("usermapper")
@@ -102,8 +107,35 @@ public class UserFormController {
         return "profile";
     }
     @GetMapping("/user/search")
-    public String showSearchForm() {
+    public String showSearchForm(@AuthenticationPrincipal UserDetails userDetails,
+                                 @RequestParam(name = "query", required = false) String keyword,
+                                 @RequestParam(name = "category", required = false) Long categoryId,
+                                 Model model) {
         log.debug("entering showSearchForm");
+
+        if (userDetails == null) return "redirect:/user/login";
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    System.out.println("Hallo hier hier hier"+user.getId());//Tests um user zu überprüfen
+                    List<Category> c = cservice.getCategoryByUserId(user.getId());
+                    List<Note> n = service.getNoteByUserId(user.getId());
+                    System.out.println("Hallo hallo hallo hierhalloooo   "+n.size()+c.size()+"Wichtige Daten hier"+keyword+categoryId); //Test für notizliste
+                    model.addAttribute("search", n);
+                    model.addAttribute("categories", c);
+
+                    List<Note> searchedNotes = service.searchNotes(user.getId(), keyword, categoryId);
+                    model.addAttribute("searchedNotes", searchedNotes);
+                    if (!n.isEmpty()) {
+                        log.debug("First note content: {}", n.get(0).getContent());
+                    } else {
+                        log.debug("No notes found for user: {}", email);
+                    }
+
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
         return "search";
     }
     @GetMapping("/user/favorites")

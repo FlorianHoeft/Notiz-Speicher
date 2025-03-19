@@ -57,4 +57,8 @@ public class NoteServiceImpl implements NoteService {
         return repository.countByUser(user);
     }
 
+    public List<Note> searchNotes(Long userId, String keyword, Long categoryId) {
+        return repository.findByUserIdAndFilters(userId, keyword, categoryId);
+    }
+
 }
