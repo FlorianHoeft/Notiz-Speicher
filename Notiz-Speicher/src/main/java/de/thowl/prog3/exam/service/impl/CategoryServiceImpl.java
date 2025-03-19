@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import de.thowl.prog3.exam.service.CategoryService;
 import de.thowl.prog3.exam.storage.entities.Category;
+import de.thowl.prog3.exam.storage.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     public List<Category> getCategoryByUserId(Long userId) {
         return repository.findCategoryByUserId(userId);
+    }
+
+    @Override
+    public Category findOrCreateCategory(String categoryName, User user) {
+        log.debug("entering findOrCreateCategory(categoryName={}, userId={})", categoryName, user.getId());
+
+        return repository.findByNameAndUser(categoryName.trim(), user)
+                .orElseGet(() -> {
+                    log.info("Creating new category: {}", categoryName);
+                    Category newCategory = new Category();
+                    newCategory.setName(categoryName.trim());
+                    newCategory.setUser(user);
+                    return repository.save(newCategory);
+                });
     }
 }
