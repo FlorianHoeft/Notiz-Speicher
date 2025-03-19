@@ -186,3 +186,25 @@
     color: #6c757d; /* Bootstrap Grau */
     font-size: 1.2rem; /* Größe des Icons leicht erhöht */
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.grid-item {
+    cursor: pointer;         /* Deutet an, dass es klickbar ist */
+    border: 1px solid #ddd;  /* Erzeugt einen klaren Rahmen */
+    padding: 10px;           /* Erhöht die Klickfläche */
+    background-color: #f8f9fa; /* Heller Hintergrund zur Abhebung */
+    transition: background 0.3s ease;
+}
+
+.grid-item:hover {
+    background-color: #e9ecef;  /* Visuelles Feedback beim Hover */
+}
+
+.form-container {
+    margin-top: 20px;
+}

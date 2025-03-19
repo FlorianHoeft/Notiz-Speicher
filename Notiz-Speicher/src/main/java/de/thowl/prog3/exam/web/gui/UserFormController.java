@@ -41,6 +41,8 @@ public class UserFormController {
 
     @Autowired private NoteRepository noteRepository;
 
+    @Autowired private CategoryRepository categoryRepository;
+
     @Autowired
     private NoteService service;
 
@@ -101,6 +103,7 @@ public class UserFormController {
                     // Anzahl der Notizen zur Statistik hinzufügen
                     int notesCount = noteRepository.countByUser(user);
                     model.addAttribute("notesCount", notesCount);
+                    model.addAttribute("kategorien", categoryRepository.findByUser(user));
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );

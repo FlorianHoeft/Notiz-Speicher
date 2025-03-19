@@ -50,8 +50,23 @@
 
         <!--Manage Category -->
         <div class="card p-4  mb-4">
-            <h5>Kategorien verwalten</h5>
+            <h1>Kategorienverwaltung</h1>
 
+            <div class="grid-container">
+                <div th:each="kategorie : ${kategorien}"
+                     class="grid-item category-item"
+                     th:text="${kategorie.name}"
+                     th:data-id="${kategorie.id}"
+                     th:data-name="${kategorie.name}">
+                </div>
+            </div>
+
+
+            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                    <i class="fas fa-plus"></i> Neue Kategorie
+                </button>
+            </div>
         </div>
 
         <!-- Passwort ändern Modal -->
@@ -122,6 +137,29 @@
                             <button type="submit" class="btn btn-danger">Ja, löschen</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal für das Hinzufügen und Bearbeiten von Kategorien -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="categoryModalLabel">Kategorie bearbeiten</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="categoryIdInput">
+                        <div class="mb-3">
+                            <label for="categoryNameInput" class="form-label">Kategorie-Name</label>
+                            <input type="text" class="form-control" id="categoryNameInput" placeholder="Name der Kategorie">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger">Löschen</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zurück</button>
+                        <button type="button" class="btn btn-success">Speichern</button>
                     </div>
                 </div>
             </div>

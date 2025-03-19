@@ -29,7 +29,7 @@
                                 <a th:href="@{/user/notes/{id}(id=${note.id})}" class="btn btn-sm btn-primary me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form th:action="@{/user/notes/{id}/delete(id=${note.id})}" method="post" style="display:inline;">
+                                <form th:action="@{/user/notes/{id}/delete(id=${note.id})}" method="post" onsubmit="return confirm('Möchtest du diese Notiz wirklich löschen?');" style="display:inline;">
                                     <button type="submit" class="btn btn-sm btn-danger ms-0">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" th:if="${notes == null or notes.empty}">
+                <<div class="col-md-12" th:if="${notes == null or #lists.isEmpty(notes)}">
                     <p>Keine Notizen vorhanden.</p>
                 </div>
             </div>

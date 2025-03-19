@@ -38,7 +38,7 @@
                         <button type="button" class="btn btn-danger ms-3" onclick="history.back()">Zurück</button>
                     </form>
 
-                    <form th:if="${note.id != null}" th:action="@{/user/notes/{id}/delete(id=${note.id})}" method="post" class="ms-3">
+                    <form th:if="${note.id != null}" th:action="@{/user/notes/{id}/delete(id=${note.id})}" method="post" onsubmit="return confirm('Möchtest du diese Notiz wirklich löschen?');" class="ms-3">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <button type="submit" class="btn btn-danger ms-3">
                             <i class="fas fa-trash-alt"></i> Löschen
