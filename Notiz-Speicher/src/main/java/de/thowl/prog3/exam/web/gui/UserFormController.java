@@ -121,7 +121,7 @@ public class UserFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    System.out.println("Hallo hier hier hier"+user.getId());//Tests um user zu überprüfen
+                    System.out.println("Hallo hier hier hier"+user.getId());//Tests for developement, remove later
                     List<Category> c = cservice.getCategoryByUserId(user.getId());
                     List<Note> n = service.getNoteByUserId(user.getId());
                     System.out.println("Hallo hallo hallo hierhalloooo   "+n.size()+c.size()+"Wichtige Daten hier"+keyword+categoryId); //Test für notizliste
@@ -151,7 +151,6 @@ public class UserFormController {
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
                     System.out.println("Hallo hier hier hier"+user.getId());//Tests um user zu überprüfen
-                    //List<Note> favorites = noteRepository.findNoteByFavorite(true); // Veraltet
                     List<Note> favorites = noteRepository.findNoteByFavoriteAndUserId(true, user.getId());
                     System.out.println("Hallo hallo hallo hierhalloooo   "+favorites.size()); //Test für notizliste
                     model.addAttribute("favorites", favorites);

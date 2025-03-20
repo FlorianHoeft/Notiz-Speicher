@@ -72,10 +72,9 @@ public class NoteFormController {
                 user -> {
                     List<Category> c = categoryService.getCategoryByUserId(user.getId());
                     model.addAttribute("categories", c);
-                    System.out.println("Hallo hallo hallo hierhalloooo   "+c.size());
+                    System.out.println("Hallo hallo hallo hierhalloooo   "+c.size()); // Test during development, remove later
 
                     model.addAttribute("note", new Note());
-
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );

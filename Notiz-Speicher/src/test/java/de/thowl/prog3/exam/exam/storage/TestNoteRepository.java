@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import de.thowl.prog3.exam.service.AuthService;
+import de.thowl.prog3.exam.service.CategoryService;
 import de.thowl.prog3.exam.service.NoteService;
+import de.thowl.prog3.exam.storage.entities.Category;
 import de.thowl.prog3.exam.storage.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +36,8 @@ public class TestNoteRepository {
     private final AuthService authService;
 
     private static final int noteid = 1;
-
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private NoteRepository repository;
@@ -118,6 +121,24 @@ public class TestNoteRepository {
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );
     }
+    @Test
+    public void showNewNoteForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
+        log.debug("entering showNewNoteForm");
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    model.addAttribute("categories", c);
+                    System.out.println("Hallo hallo hallo hierhalloooo   "+c.size()); // Test during development, remove later
+
+                    model.addAttribute("note", new Note());
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
+
+    }
+
 
 
 
