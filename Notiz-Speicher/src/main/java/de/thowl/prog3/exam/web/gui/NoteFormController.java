@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -61,11 +62,26 @@ public class NoteFormController {
     }
 
     @GetMapping("/user/notes/new")
-    public String showNewNoteForm(Model model) {
+    public String showNewNoteForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
         log.debug("entering showNewNoteForm");
-        model.addAttribute("note", new Note());
+
+        if (userDetails == null) return "redirect:/user/login";
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    model.addAttribute("categories", c);
+                    System.out.println("Hallo hallo hallo hierhalloooo   "+c.size());
+
+                    model.addAttribute("note", new Note());
+
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
         return "note-form";
     }
+
 
     @GetMapping("/user/notes/{id}")
     public String showEditNoteForm(@PathVariable("id") Long id, Model model) {

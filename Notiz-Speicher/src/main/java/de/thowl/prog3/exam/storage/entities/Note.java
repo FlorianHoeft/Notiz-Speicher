@@ -22,11 +22,10 @@ public class Note{
     private Long id;
 
     @Column(name = "title")
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 80)
     private String title;
 
     @Column(name = "content")
-    @Size(min = 1, max = 999)
     private String content;
 
     @Column(name = "favorite")
