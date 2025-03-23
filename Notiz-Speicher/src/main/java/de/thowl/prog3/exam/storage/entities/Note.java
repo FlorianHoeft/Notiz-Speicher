@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Note Table is created here
- * Only the Title Column has Size Limit so that a User doesnt fill
+ * This Class creates a Table called Note in the Database
+ * This Class uses JPA annotations for Object mapping
  */
 @Entity
 
@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "notes")
 public class Note{
-
     /**
      * Id is generated when new Note is created
      * @param GeneratedValue generates a value when new entry is created

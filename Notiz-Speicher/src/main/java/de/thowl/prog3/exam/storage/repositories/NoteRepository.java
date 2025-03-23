@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
- * Repository interface for accessing and managing Note entities in the database.
- * Extends JpaRepository to provide basic JPA operations and custom query methods.
+ * Repository interface for accessing and managing Note entities in the database
+ * Extends JpaRepository to provide basic JPA operations and custom query methods
  */
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
@@ -29,7 +29,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     public List<Note> findByUserId(Long userId);
 
     /**
-     * Finds notes for a user with optional filters: keyword (in title or content) and category.
+     * Finds notes for a user with optional filters: keyword (in title or content) and category
      *
      * @param userId the ID of the user
      * @param keyword the keyword to search in content or title (optional)

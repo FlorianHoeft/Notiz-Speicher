@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * This Class creates a Table called User in the Database
+ * This Class uses JPA annotations for Object mapping
+ */
 @Entity
 
 @Data
@@ -15,7 +18,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "users")
 public class User {
-
+    /**
+     * Id is generated when new User is created
+     * @param GeneratedValue generates a value when new entry is created
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
