@@ -5,7 +5,9 @@ import java.util.List;
 import de.thowl.prog3.exam.storage.entities.Category;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.entities.User;
-
+/**
+ * Interface for managing and retrieving Notes
+ */
 public interface CategoryService {
 
     public Category getCategory(long id);
@@ -16,5 +18,10 @@ public interface CategoryService {
 
     public Category findOrCreateCategory(String categoryName, User user);
 
+    /**
+     * Retrieves a List of Categories based on a User ID
+     *
+     * @param userId Id of a User
+     */
     public List<Category> getCategoryByUserId(Long userId);
 }

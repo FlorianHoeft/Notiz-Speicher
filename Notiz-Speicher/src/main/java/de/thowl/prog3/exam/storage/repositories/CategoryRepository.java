@@ -10,7 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
+/**
+ * Repository interface for accessing and managing Category entities in the database
+ * Extends JpaRepository to provide basic JPA operations and custom query methods
+ */
 public interface CategoryRepository extends JpaRepository<Category, Long>{
 
     public Optional<Category> findCategoryById(long id);
