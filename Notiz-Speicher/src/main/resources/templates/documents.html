@@ -23,6 +23,7 @@
                     <th>Titel</th>
                     <th>Kategorie</th>
                     <th>Inhalt</th>
+                    <th>Änderungsdatum</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,7 @@
                     <td th:text="${n.title}"></td>
                     <td th:text="${n.category.name}"></td>
                     <td th:text="${n.content}"></td>
+                    <td th:text="${#temporals.format(n.lastModified, 'dd.MM.yyyy HH:mm')}"></td>
                 </tr>
                 </tbody>
             </table>

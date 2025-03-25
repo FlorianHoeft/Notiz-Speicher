@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * This Class creates a Table called Note in the Database
  * This Class uses JPA annotations for Object mapping
@@ -36,6 +38,17 @@ public class Note{
 
     @Column(name = "favorite")
     private boolean favorite;
+
+    @Column
+    private LocalDateTime lastModified;
+
+    @PrePersist
+    @PreUpdate
+    public void updateTimestamp() {
+        lastModified = LocalDateTime.now();
+    }
+
+
     /**
      * The Column user_Id is here linked to the User Table with a many to one relation
      */

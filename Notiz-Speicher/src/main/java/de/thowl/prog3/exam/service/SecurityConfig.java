@@ -1,6 +1,5 @@
 package de.thowl.prog3.exam.service;
 
-import de.thowl.prog3.exam.service.AuthService;
 import de.thowl.prog3.exam.storage.repositories.UserRepository;
 import de.thowl.prog3.exam.web.api.UserController;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

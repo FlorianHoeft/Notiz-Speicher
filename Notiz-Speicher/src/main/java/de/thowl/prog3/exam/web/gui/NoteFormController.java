@@ -85,12 +85,35 @@ public class NoteFormController {
      * @return The Note editing form view
      */
     @GetMapping("/user/notes/{id}")
-    public String showEditNoteForm(@PathVariable("id") Long id, Model model) {
+    public String showEditNoteForm(@PathVariable("id") Long id,@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showEditNoteForm for note id: {}", id);
+
+
+        if (userDetails == null) return "redirect:/user/login";
+
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(
+                user -> {
+                    List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    model.addAttribute("categories", c);
+                    model.addAttribute("note", new Note());
+                    noteRepository.findById(id).ifPresentOrElse(
+                    note -> model.addAttribute("note", note),
+                            () -> model.addAttribute("error", "Notiz nicht gefunden.")
+        );
+                },
+                () -> model.addAttribute("error", "Benutzer nicht gefunden.")
+        );
+
+
+        /*
         noteRepository.findById(id).ifPresentOrElse(
+                List<Category> c = categoryService.getCategoryByUserId(user.getId());
                 note -> model.addAttribute("note", note),
                 () -> model.addAttribute("error", "Notiz nicht gefunden.")
-        );
+        );*/
+
+
         return "note-form";
     }
     /**

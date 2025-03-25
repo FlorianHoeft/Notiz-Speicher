@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CategoryFormController {
     @Autowired
     private AuthService authService;
+
     private static final Logger log = LoggerFactory.getLogger(NoteFormController.class);
+
     @Autowired private CategoryRepository categoryRepository;
 
     /**
