@@ -146,7 +146,7 @@ public class UserFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    List<Category> c = cservice.getCategoryByUserId(user.getId());
+                    List<Category> c = cservice.getCategoryByUserIdOrGlobal(user.getId());
                     List<Note> n = service.getNoteByUserId(user.getId());
                     model.addAttribute("search", n);
                     model.addAttribute("categories", c);

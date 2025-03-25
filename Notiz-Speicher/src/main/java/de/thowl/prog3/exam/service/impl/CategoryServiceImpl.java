@@ -88,4 +88,9 @@ public class CategoryServiceImpl implements CategoryService {
                     return repository.save(newCategory);
                 });
     }
+
+    @Override
+    public List<Category> getCategoryByUserIdOrGlobal(Long userId) {
+        return repository.findByUserIdOrGlobal(userId);
+    }
 }

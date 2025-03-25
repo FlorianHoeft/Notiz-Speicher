@@ -68,7 +68,8 @@ public class NoteFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    //List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    List<Category> c = categoryService.getCategoryByUserIdOrGlobal(user.getId());
                     model.addAttribute("categories", c);
                     model.addAttribute("note", new Note());
                 },
@@ -94,7 +95,7 @@ public class NoteFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    List<Category> c = categoryService.getCategoryByUserId(user.getId());
+                    List<Category> c = categoryService.getCategoryByUserIdOrGlobal(user.getId());
                     model.addAttribute("categories", c);
                     model.addAttribute("note", new Note());
                     noteRepository.findById(id).ifPresentOrElse(

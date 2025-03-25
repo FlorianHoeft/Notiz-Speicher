@@ -28,6 +28,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long>{
 
     public List<Category> findByUser(User user);
 
+    @Query("SELECT c FROM Category c WHERE c.user.id = :userId OR c.user IS NULL")
+    List<Category> findByUserIdOrGlobal(@Param("userId") Long userId);
+
     /**
      * Löscht alle Kategorien eines bestimmten Benutzers.
      * @param userId Die ID des Benutzers, dessen Kategorien gelöscht werden sollen.
