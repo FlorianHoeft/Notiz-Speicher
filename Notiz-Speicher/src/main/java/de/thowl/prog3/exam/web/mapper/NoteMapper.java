@@ -12,6 +12,6 @@ import org.springframework.stereotype.Component;
 public class NoteMapper {
 
     public de.thowl.prog3.exam.web.dto.Note map(Note in) {
-        return new de.thowl.prog3.exam.web.dto.Note(in.getId(), in.getTitle(), in.getContent());
+        return new de.thowl.prog3.exam.web.dto.Note(in.getId(), in.getTitle(), in.getContent(),in.getShareLink());
     }
 }

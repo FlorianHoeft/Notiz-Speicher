@@ -112,3 +112,9 @@ function deleteCategory() {
 }
 
 
+function copyShareLink() {
+    const shareLinkInput = document.getElementById('shareLinkInput');
+    shareLinkInput.select();
+    navigator.clipboard.writeText(shareLinkInput.value);
+    alert('Link wurde in die Zwischenablage kopiert!');
+}

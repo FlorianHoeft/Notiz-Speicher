@@ -62,7 +62,8 @@ public class Note{
     @JoinColumn(name = "category_id")
     private Category category;
 
-
+    @Column(name = "share_link")
+    private String shareLink;
 
 
 }

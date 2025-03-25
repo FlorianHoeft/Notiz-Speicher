@@ -18,9 +18,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Controller for handling Note-related forms
@@ -159,5 +161,56 @@ public class NoteFormController {
         Note note = optionalNote.get();
         noteRepository.delete(note);
         return "redirect:/user";
+    }
+
+    /**
+     * Generates a UUID to get a Link to share
+     *
+     * @param noteId current noteID
+     * @param userDetails The authenticated User details
+     * @param redirectAttributes To show messages
+     * @return
+     */
+    @PostMapping("/user/note/{noteId}/share")
+    public String generateShareLink(@PathVariable Long noteId,
+                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    RedirectAttributes redirectAttributes) {
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(user -> {
+            Note note = noteRepository.findById(noteId)
+                    .orElseThrow(() -> new IllegalArgumentException("Notiz nicht gefunden"));
+
+            if (!note.getUser().getEmail().equals(email)) {
+                redirectAttributes.addFlashAttribute("error", "Sie haben keine Berechtigung für diese Notiz");
+                return;
+            }
+
+            String shareLink = UUID.randomUUID().toString();
+            note.setShareLink(shareLink);
+            noteRepository.save(note);
+
+            log.debug("Share link: {}", shareLink);
+            redirectAttributes.addFlashAttribute("shareLink", "/share/note/" + shareLink);
+        }, () -> {
+            log.error("Benutzer nicht gefunden: {}", email);
+            redirectAttributes.addFlashAttribute("error", "Benutzer nicht gefunden");
+        });
+
+        return "redirect:/user/notes/" + noteId;
+    }
+
+    /**
+     * Loads a site to a shared note
+     *
+     * @param shareLink Shared link to the note
+     * @param model The model to store attributes
+     * @return
+     */
+    @GetMapping("/share/note/{shareLink}")
+    public String accessSharedNote(@PathVariable String shareLink, Model model) {
+        Note note = noteRepository.findByShareLink(shareLink)
+                .orElseThrow(() -> new IllegalArgumentException("Ungültiger Freigabelink"));
+        model.addAttribute("note", note);
+        return "shared_note";
     }
 }

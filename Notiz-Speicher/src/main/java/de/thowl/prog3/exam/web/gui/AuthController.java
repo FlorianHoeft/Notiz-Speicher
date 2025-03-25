@@ -3,6 +3,8 @@ package de.thowl.prog3.exam.web.gui;
 import de.thowl.prog3.exam.service.AuthService;
 import de.thowl.prog3.exam.web.api.UserController;
 import de.thowl.prog3.exam.web.mapper.UserMapper;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +60,6 @@ public class AuthController {
         return "register";
     }
 
-    @GetMapping("/user/logout")
-    public String showLogoutForm() {
-        log.debug("entering showLogoutForm");
-        return "logout";
-    }
-
     @PostMapping("/user/register")
     public String register(@RequestParam("username") String username,
                            @RequestParam("password") String password,
@@ -116,15 +112,21 @@ public class AuthController {
      * Löscht den angemeldeten Benutzer und leitet zur Startseite um.
      * @param userDetails Die Details des angemeldeten Benutzers.
      * @param redirectAttributes Zum Übermitteln von Erfolgsmeldungen.
+     * @param request
      * @return Weiterleitung zur Startseite.
      */
     @PostMapping("/user/delete")
     public String deleteUser(@AuthenticationPrincipal UserDetails userDetails,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes, HttpServletRequest request) {
         authService.findUserByEmail(userDetails.getUsername())
                 .ifPresent(user -> {
                     if(authService.deleteUser(user.getId())) {
                         redirectAttributes.addFlashAttribute("success", "Benutzer wurde erfolgreich gelöscht.");
+                        try {
+                            request.logout();
+                        } catch (ServletException e) {
+                            log.error("Fehler beim Logout nach Benutzerlöschung", e);
+                        }
                     }
                 });
         return "redirect:/user/login?profileDeleted=true";
@@ -132,6 +134,7 @@ public class AuthController {
 
     /**
      * Update the current Username to the new one
+     *
      * @param userDetails
      * @param name
      * @param model

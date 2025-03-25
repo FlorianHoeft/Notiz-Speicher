@@ -46,11 +46,40 @@
                             <i class="fas fa-trash-alt"></i> Löschen
                         </button>
                     </form>
+
+                    <form th:if="${note.id != null}" th:action="@{/user/note/{id}/share(id=${note.id})}" method="post" style="display:inline;" class="ms-3">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-key"></i> Freigabelink generieren
+                        </button>
+                    </form>
+
+                    <button type="button" class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#shareLinkModal">
+                        <i class="fas fa-share-alt"></i> Freigabelink anzeigen
+                    </button>
                 </div>
             </form>
         </div>
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="modal fade" id="shareLinkModal" tabindex="-1" aria-labelledby="shareLinkModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="shareLinkModalLabel">Freigabelink</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="shareLinkInput" class="form-label">Ihr Freigabelink:</label>
+                            <input type="text" class="form-control" id="shareLinkInput" th:value="${note.shareLink != null ? 'http://localhost:8080/share/note/' + note.shareLink : ''}" readonly>
+                            <button class="btn btn-secondary mt-2" onclick="copyShareLink()">In Zwischenablage kopieren</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/script.js}"></script>

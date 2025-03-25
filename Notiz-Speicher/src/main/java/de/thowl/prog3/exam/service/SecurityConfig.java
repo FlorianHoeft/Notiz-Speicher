@@ -35,7 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/user/login", "/user/register", "/resources/**").permitAll()
+                        .requestMatchers("/user/login", "/user/register", "/resources/**", "/share/note/**").permitAll()
                         .requestMatchers("/user/**").authenticated()
                         .anyRequest().permitAll()
                 )

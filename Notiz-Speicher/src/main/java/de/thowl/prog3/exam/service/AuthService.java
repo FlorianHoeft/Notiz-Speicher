@@ -24,7 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Autowired private NoteRepository noteRepository;
-    private CategoryRepository categoryRepository;
+    @Autowired private CategoryRepository categoryRepository;
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;

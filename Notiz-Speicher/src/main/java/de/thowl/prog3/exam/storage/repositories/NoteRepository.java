@@ -29,6 +29,12 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     public List<Note> findByUserId(Long userId);
 
+    public Optional<Note> findByShareLink(String shareLink);
+
+    public List<Note> findByUser(User user);
+
+    public boolean existsByCategoryId(Long categoryId);
+
     /**
      * Finds notes for a user with optional filters: keyword (in title or content) and category
      *
@@ -51,4 +57,5 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
      */
     @Transactional
     void deleteByUserId(Long userId);
+
 }
