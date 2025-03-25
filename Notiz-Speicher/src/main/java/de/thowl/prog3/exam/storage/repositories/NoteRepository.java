@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository interface for accessing and managing Note entities in the database
@@ -44,4 +45,10 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
                                       @Param("categoryId") Long categoryId);
 
     int countByUser(User user);
+    /**
+     * Löscht alle Notizen eines bestimmten Benutzers.
+     * @param userId Die ID des Benutzers, dessen Notizen gelöscht werden sollen.
+     */
+    @Transactional
+    void deleteByUserId(Long userId);
 }

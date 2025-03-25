@@ -2,6 +2,7 @@ package de.thowl.prog3.exam.service;
 
 import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
 import de.thowl.prog3.exam.storage.repositories.UserRepository;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import de.thowl.prog3.exam.web.api.UserController;
@@ -23,6 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Autowired private NoteRepository noteRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -104,8 +106,19 @@ public class AuthService {
             return false;
         }
 
+        noteRepository.deleteByUserId(userId);
+        categoryRepository.deleteByUserId(userId);
         userRepository.deleteById(userId);
+
         log.info("Benutzer mit ID {} wurde erfolgreich gelöscht", userId);
         return true;
+    }
+
+    /**
+     * Update the User Credentials
+     * @param user new User Credentials
+     */
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 }

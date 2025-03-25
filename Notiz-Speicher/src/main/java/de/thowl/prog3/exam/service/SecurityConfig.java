@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/user/logout")
+                        .ignoringRequestMatchers("/h2-console/**", "/user/logout", "/user/category/**")
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.disable())

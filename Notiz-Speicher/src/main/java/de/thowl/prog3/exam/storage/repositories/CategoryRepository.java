@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Repository interface for accessing and managing Category entities in the database
  * Extends JpaRepository to provide basic JPA operations and custom query methods
@@ -25,4 +27,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long>{
     public Optional<Category> findByNameAndUser(String name, User user);
 
     public List<Category> findByUser(User user);
+
+    /**
+     * Löscht alle Kategorien eines bestimmten Benutzers.
+     * @param userId Die ID des Benutzers, dessen Kategorien gelöscht werden sollen.
+     */
+    @Transactional
+    void deleteByUserId(Long userId);
 }

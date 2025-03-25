@@ -129,4 +129,27 @@ public class AuthController {
                 });
         return "redirect:/user/login?profileDeleted=true";
     }
+
+    /**
+     * Update the current Username to the new one
+     * @param userDetails
+     * @param name
+     * @param model
+     * @return
+     */
+    @PostMapping("/user/update")
+    public String updateUser(@AuthenticationPrincipal UserDetails userDetails,
+                             @RequestParam String name,
+                             Model model) {
+        String email = userDetails.getUsername();
+        authService.findUserByEmail(email).ifPresentOrElse(user -> {
+            user.setName(name);
+            authService.updateUser(user);
+            model.addAttribute("param.success", true);
+        }, () -> {
+            log.error("Benutzer nicht gefunden: {}", email);
+            model.addAttribute("error", "Benutzer nicht gefunden");
+        });
+        return "redirect:/user/profile";
+    }
 }

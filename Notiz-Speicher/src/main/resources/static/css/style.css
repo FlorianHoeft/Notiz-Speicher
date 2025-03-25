@@ -75,7 +75,7 @@
 }
 
 .logo {
-    position: absolute;
+    position: fixed;
     top: 20px; /* Abstand vom oberen Rand */
     left: 60px; /* Abstand vom linken Rand */
     width: 200px;
@@ -126,7 +126,7 @@
 }
 /* Button für Sidebar-Toggle */
 .sidebar-toggle {
-    position: absolute;
+    position: fixed;
     top: 20px; /* Abstand vom oberen Rand */
     left: 20px; /* Abstand vom linken Rand */
     background: none;
@@ -192,19 +192,17 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
 }
-
 .grid-item {
-    cursor: pointer;         /* Deutet an, dass es klickbar ist */
-    border: 1px solid #ddd;  /* Erzeugt einen klaren Rahmen */
-    padding: 10px;           /* Erhöht die Klickfläche */
-    background-color: #f8f9fa; /* Heller Hintergrund zur Abhebung */
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f8f9fa;
     transition: background 0.3s ease;
+    text-align: center;
 }
-
 .grid-item:hover {
-    background-color: #e9ecef;  /* Visuelles Feedback beim Hover */
+    background-color: #e9ecef;
 }
-
 .form-container {
     margin-top: 20px;
 }

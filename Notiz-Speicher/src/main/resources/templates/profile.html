@@ -19,14 +19,14 @@
         <!-- Benutzerinformationen -->
         <div class="card p-4 mb-4">
             <h5>Persönliche Daten</h5>
-            <form>
+            <form th:action="@{/user/update}" method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" th:value="${user?.name}">
+                    <input type="text" class="form-control" id="name" name="name" th:value="${user?.name}" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">E-Mail</label>
-                    <input type="email" class="form-control" id="email" th:value="${user?.email}">
+                    <input type="email" class="form-control" id="email" th:value="${user?.email}" readonly>
                 </div>
                 <button type="submit" class="btn btn-primary">Speichern</button>
             </form>
@@ -57,13 +57,14 @@
                      class="grid-item category-item"
                      th:text="${kategorie.name}"
                      th:data-id="${kategorie.id}"
-                     th:data-name="${kategorie.name}">
+                     th:data-name="${kategorie.name}"
+                     onclick="loadCategory(this)">
                 </div>
             </div>
 
 
             <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#categoryModal" onclick="clearCategoryModal()">
                     <i class="fas fa-plus"></i> Neue Kategorie
                 </button>
             </div>
@@ -147,19 +148,21 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="categoryModalLabel">Kategorie bearbeiten</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="categoryIdInput">
-                        <div class="mb-3">
-                            <label for="categoryNameInput" class="form-label">Kategorie-Name</label>
-                            <input type="text" class="form-control" id="categoryNameInput" placeholder="Name der Kategorie">
-                        </div>
+                        <form id="categoryForm" th:action="@{/user/category}" method="post">
+                            <input type="hidden" id="categoryIdInput" name="id">
+                            <div class="mb-3">
+                                <label for="categoryNameInput" class="form-label">Kategorie-Name</label>
+                                <input type="text" class="form-control" id="categoryNameInput" name="name" placeholder="Name der Kategorie">
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger">Löschen</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteCategory()">Löschen</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zurück</button>
-                        <button type="button" class="btn btn-success">Speichern</button>
+                        <button type="button" class="btn btn-success" onclick="saveCategory()">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -170,14 +173,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/script.js}"></script>
-    <script>
-        function togglePassword(fieldId) {
-            console.log('togglePassword aufgerufen für:', fieldId);
-            const input = document.getElementById(fieldId);
-            if (!input) {
-                console.error('Input-Feld nicht gefunden:', fieldId);
-                return;
-            }
+<script>
+    function togglePassword(fieldId) {
+        console.log('togglePassword aufgerufen für:', fieldId);
+        const input = document.getElementById(fieldId);
+        if (!input) {
+            console.error('Input-Feld nicht gefunden:', fieldId);
+                ;
+        }
             const button = input.nextElementSibling;
             if (!button || !button.classList.contains('password-toggle-btn')) {
                 console.error('Toggle-Button nicht gefunden für:', fieldId);
@@ -222,6 +225,7 @@
 
             document.getElementById('safePasswordButton').disabled = !(lengthCheck && specialCharCheck && numberCheck && caseCheck && passwordsMatch);
         }
-    </script>
+
+</script>
 </body>
 </html>

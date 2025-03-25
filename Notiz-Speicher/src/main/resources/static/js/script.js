@@ -67,41 +67,48 @@ function closeModal() {
         modal.style.display = 'none';
     }
 }
-document.querySelectorAll('.grid-item').forEach(item => {
-    item.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-        const name = this.getAttribute('data-name');
-        openCategoryModal(id, name);
-    });
-});
 
-function openCategoryModal(id, name) {
-    console.log(`Modal geöffnet für ID: ${id}, Name: ${name}`);
+function loadCategory(element) {
+    const categoryId = element.getAttribute('data-id');
+    const categoryName = element.getAttribute('data-name');
 
-    const modal = document.getElementById('categoryModal');
-    if (modal) {
-        modal.style.display = 'block';
-        document.getElementById('categoryId').value = id;
-        document.getElementById('categoryName').value = name;
-    }
+    document.getElementById('categoryIdInput').value = categoryId;
+    document.getElementById('categoryNameInput').value = categoryName;
+    document.getElementById('categoryModalLabel').textContent = 'Kategorie bearbeiten';
+
+    const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+    modal.show();
 }
-document.addEventListener("DOMContentLoaded", function () {
-    // Stelle sicher, dass alle Kategorie-Elemente vorhanden sind
-    const categoryItems = document.querySelectorAll(".category-item");
+function clearCategoryModal() {
+    document.getElementById('categoryIdInput').value = '';
+    document.getElementById('categoryNameInput').value = '';
+    document.getElementById('categoryModalLabel').textContent = 'Neue Kategorie';
+}
+function saveCategory() {
+    const form = document.getElementById('categoryForm');
+    form.submit();
+}
 
-    categoryItems.forEach(item => {
-        item.addEventListener("click", function () {
-            // Hole die ID und den Namen der Kategorie
-            const categoryId = item.getAttribute("data-id");
-            const categoryName = item.getAttribute("data-name");
+function deleteCategory() {
+    const categoryId = document.getElementById('categoryIdInput')?.value.trim();
 
-            // Fülle die Werte in die Modal-Inputs
-            document.getElementById("categoryIdInput").value = categoryId;
-            document.getElementById("categoryNameInput").value = categoryName;
+    if (!categoryId) {
+        alert('Keine Kategorie-ID vorhanden.');
+        return;
+    }
 
-            // Öffne das Modal
-            const categoryModal = new bootstrap.Modal(document.getElementById("categoryModal"));
-            categoryModal.show();
-        });
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+
+    fetch(`/user/category/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
+        }
+    }).then(response => {
+        window.location.href = '/user/profile';
     });
-});
+}
+
+
