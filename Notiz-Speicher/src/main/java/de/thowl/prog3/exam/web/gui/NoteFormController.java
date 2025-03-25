@@ -1,40 +1,31 @@
 package de.thowl.prog3.exam.web.gui;
 
 import de.thowl.prog3.exam.service.CategoryService;
-import de.thowl.prog3.exam.service.UserService;
 import de.thowl.prog3.exam.storage.entities.*;
-import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
-import de.thowl.prog3.exam.web.gui.form.UserForm;
-import de.thowl.prog3.exam.web.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import de.thowl.prog3.exam.service.NoteService;
-import de.thowl.prog3.exam.web.gui.form.NoteForm;
 import de.thowl.prog3.exam.web.mapper.NoteMapper;
-import lombok.extern.slf4j.Slf4j;
 import de.thowl.prog3.exam.service.AuthService;
-import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.entities.Note;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Controller for handling Note-related forms
+ * Provides functionality to create, edit, save, and delete Notes
+ */
 @Controller
 public class NoteFormController {
 
@@ -48,11 +39,12 @@ public class NoteFormController {
 
     @Autowired
     NoteService svc;
+
     /**
-     * Stellt den Benutzernamen global für alle Templates bereit.
+     * Adds the currently authenticated user's name to the model
      *
-     * @param userDetails Der eingeloggte Benutzer.
-     * @return Der Benutzername oder "Gast", falls nicht eingeloggt.
+     * @param userDetails The authenticated User details
+     * @return The username or "Gast" if the user is not found
      */
     @ModelAttribute("username")
     public String addUserToModel(@AuthenticationPrincipal UserDetails userDetails) {
@@ -60,7 +52,13 @@ public class NoteFormController {
                 .map(User::getName)
                 .orElse("Gast");
     }
-
+    /**
+     * Displays the form to create a new Note
+     *
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return The note creation form view
+     */
     @GetMapping("/user/notes/new")
     public String showNewNoteForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
         log.debug("entering showNewNoteForm");
@@ -72,8 +70,6 @@ public class NoteFormController {
                 user -> {
                     List<Category> c = categoryService.getCategoryByUserId(user.getId());
                     model.addAttribute("categories", c);
-                    System.out.println("Hallo hallo hallo hierhalloooo   "+c.size()); // Test during development, remove later
-
                     model.addAttribute("note", new Note());
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
@@ -81,7 +77,13 @@ public class NoteFormController {
         return "note-form";
     }
 
-
+    /**
+     * Displays the form to edit an existing Note
+     *
+     * @param id The ID of the Note to edit
+     * @param model The model to store attributes
+     * @return The Note editing form view
+     */
     @GetMapping("/user/notes/{id}")
     public String showEditNoteForm(@PathVariable("id") Long id, Model model) {
         log.debug("entering showEditNoteForm for note id: {}", id);
@@ -89,9 +91,16 @@ public class NoteFormController {
                 note -> model.addAttribute("note", note),
                 () -> model.addAttribute("error", "Notiz nicht gefunden.")
         );
-        return "note-form"; // Wiederverwendung desselben Formulars
+        return "note-form";
     }
-
+    /**
+     * Saves a new or updated Note
+     *
+     * @param note The Note object
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return Redirects to the User dashboard after saving
+     */
     @PostMapping("/user/notes")
     public String saveNote(@ModelAttribute("note") Note note,
                            @AuthenticationPrincipal UserDetails userDetails,
@@ -101,19 +110,24 @@ public class NoteFormController {
 
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresent(user -> {
-            note.setUser(user); // Verknüpfung mit dem Benutzer
+            note.setUser(user);
             if (note.getCategory() != null && note.getCategory().getName() != null) {
                 Category category = categoryService.findOrCreateCategory(note.getCategory().getName(), user);
                 note.setCategory(category);
             }
-            authService.saveNote(note); // Speichert sowohl neue als auch bearbeitete Notizen
+            authService.saveNote(note);
         });
         return "redirect:/user";
     }
-
+    /**
+     * Deletes a Note by its ID
+     *
+     * @param id The ID of the Note to delete
+     * @return Redirects to the User dashboard after deletion
+     */
     @PostMapping("/user/notes/{id}/delete")
     public String deleteNote(@PathVariable Long id) {
-        System.out.println("DeleteNote aufgerufen mit ID: " + id); // ➤ Debug-Lo
+        System.out.println("DeleteNote aufgerufen mit ID: " + id);
         Optional<Note> optionalNote = noteRepository.findById(id);
         if (optionalNote.isEmpty()) {
             return "redirect:/user?error=NotizNichtGefunden";

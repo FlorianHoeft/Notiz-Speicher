@@ -9,18 +9,13 @@ import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import java.util.Optional;
-
-
 import de.thowl.prog3.exam.service.UserService;
 import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.web.gui.form.UserForm;
@@ -29,12 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-
+/**
+ * Controller for handling User-related forms
+ * Provides functionalities for displaying user notes, profile, favorite notes, searching notes, and user processing
+ */
 @Slf4j
 @Controller
 public class UserFormController {
     private final AuthService authService;
-
+    /**
+     * Constructor-based dependency injection for AuthService
+     *
+     * @param authService The authentication service
+     */
     public UserFormController(AuthService authService) {
         this.authService = authService;
     }
@@ -55,12 +57,11 @@ public class UserFormController {
 
     @Autowired
     UserService svc;
-
     /**
-     * Stellt den Benutzernamen global für alle Templates bereit.
+     * Adds the currently authenticated Users name to the model
      *
-     * @param userDetails Der eingeloggte Benutzer.
-     * @return Der Benutzername oder "Gast", falls nicht eingeloggt.
+     * @param userDetails The authenticated User details
+     * @return The username or "Gast" if the User is not found
      */
     @ModelAttribute("username")
     public String addUserToModel(@AuthenticationPrincipal UserDetails userDetails) {
@@ -68,7 +69,13 @@ public class UserFormController {
                 .map(User::getName)
                 .orElse("Gast");
     }
-
+    /**
+     * Displays the Users notes page
+     *
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return The User notes page or redirects to login if unauthenticated
+     */
     @GetMapping("/user")
     public String showNotes(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showNotes");
@@ -84,13 +91,23 @@ public class UserFormController {
         );
         return "user";
     }
-
+    /**
+     * Displays the forgot password form
+     *
+     * @return The forgot password view
+     */
     @GetMapping("/user/forgot-password")
     public String showForgot_passwordForm() {
         log.debug("entering showForgot-passwordForm");
         return "forgot-password";
     }
-
+    /**
+     * Displays the User profile page
+     *
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return The profile view or redirects to login if unauthenticated
+     */
     @GetMapping("/user/profile")
     public String showProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showProfile");
@@ -100,7 +117,6 @@ public class UserFormController {
                 user -> {
                     model.addAttribute("user", user);
 
-                    // Anzahl der Notizen zur Statistik hinzufügen
                     int notesCount = noteRepository.countByUser(user);
                     model.addAttribute("notesCount", notesCount);
                     model.addAttribute("kategorien", categoryRepository.findByUser(user));
@@ -109,6 +125,15 @@ public class UserFormController {
         );
         return "profile";
     }
+    /**
+     * Displays the search form and handles Note search query
+     *
+     * @param userDetails The authenticated User details
+     * @param keyword The search keyword
+     * @param categoryId The Category ID filter
+     * @param model The model to store search results
+     * @return The search results view
+     */
     @GetMapping("/user/search")
     public String showSearchForm(@AuthenticationPrincipal UserDetails userDetails,
                                  @RequestParam(name = "query", required = false) String keyword,
@@ -121,10 +146,8 @@ public class UserFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    System.out.println("Hallo hier hier hier"+user.getId());//Tests for developement, remove later
                     List<Category> c = cservice.getCategoryByUserId(user.getId());
                     List<Note> n = service.getNoteByUserId(user.getId());
-                    System.out.println("Hallo hallo hallo hierhalloooo   "+n.size()+c.size()+"Wichtige Daten hier"+keyword+categoryId); //Test für notizliste
                     model.addAttribute("search", n);
                     model.addAttribute("categories", c);
 
@@ -141,6 +164,13 @@ public class UserFormController {
         );
         return "search";
     }
+    /**
+     * Displays the Users favorite Notes
+     *
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return The favorites view
+     */
     @GetMapping("/user/favorites")
     public String showFavoritesForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showFavoritesForm");
@@ -150,9 +180,7 @@ public class UserFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    System.out.println("Hallo hier hier hier"+user.getId());//Tests um user zu überprüfen
                     List<Note> favorites = noteRepository.findNoteByFavoriteAndUserId(true, user.getId());
-                    System.out.println("Hallo hallo hallo hierhalloooo   "+favorites.size()); //Test für notizliste
                     model.addAttribute("favorites", favorites);
                     if (!favorites.isEmpty()) {
                         log.debug("First favorite note content: {}", favorites.get(0).getContent());
@@ -165,13 +193,19 @@ public class UserFormController {
         );
         return "favorites";
     }
+    /**
+     * Displays the Users documents
+     *
+     * @param userDetails The authenticated User details
+     * @param model The model to store attributes
+     * @return The documents view
+     */
     @GetMapping("/user/documents")
     public String showDocumentsForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
 
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
         user -> {
-            System.out.println("Hallo hier hier hier"+user.getId()); //Tests um user zu überprüfen
             log.debug("entering showDocumentsForm");
             List<Note> n = service.getNoteByUserId(user.getId());
             model.addAttribute("n", n);
@@ -180,7 +214,13 @@ public class UserFormController {
         );
         return "documents";
     }
-
+    /**
+     * Processes the User form submission
+     *
+     * @param model The model to store attributes
+     * @param formdata The User form data
+     * @return The view to display User information or the form again if not found
+     */
     @PostMapping("/user")
     public String processUserForm(Model model, UserForm formdata) {
         log.debug("entering processUserForm");
