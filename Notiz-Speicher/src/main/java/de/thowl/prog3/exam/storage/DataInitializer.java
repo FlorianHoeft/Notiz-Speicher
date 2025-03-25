@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Initializer to load default Categories on first start
+ */
 @Component
 public class DataInitializer implements ApplicationRunner {
 
@@ -19,6 +22,10 @@ public class DataInitializer implements ApplicationRunner {
     public DataInitializer(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
+    /**
+     * Creates three different Categories, with user_id=null
+     */
     @Override
     public void run(ApplicationArguments args){
         if (categoryRepository.count() == 0) {
@@ -38,9 +45,9 @@ public class DataInitializer implements ApplicationRunner {
             categoryRepository.save(cat2);
             categoryRepository.save(cat3);
 
-            log.info("Standard Kategorien wurden erfolgreich hinzugefügt.");
+            log.info("Default Categories added successfully");
         } else {
-            log.info("Kategorien bereits vorhanden, keine weiteren Standard Kategorien hinzugefügt.");
+            log.info("Categories already exist");
         }
 
     }
