@@ -16,15 +16,17 @@ import de.thowl.prog3.exam.service.CategoryService;
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.web.mapper.NoteMapper;
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * Rest controller that handles HTTP requests related to Category
+ */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/v1/category")// Base URL path for all user-related endpoints
 public class CategoryController {
 
     @Autowired
     @Qualifier("categorymapper")
-    private CategoryMapper mapper = new CategoryMapper();
+    private CategoryMapper mapper = new CategoryMapper(); // Converts Category entities to DTOs
 
     @Autowired
     private CategoryService service;
@@ -33,6 +35,12 @@ public class CategoryController {
         log.debug("entering ctor");
     }
 
+    /**
+     * Handles GET requests to /api/v1/category/
+     * Retrieves a list of all Categories and returns them as DTOs
+     *
+     * @return A list of Categroy DTOs
+     */
     @GetMapping("/")
     public List<de.thowl.prog3.exam.web.dto.Category> getCategory() {
         log.debug("entering getCategory");
@@ -43,14 +51,26 @@ public class CategoryController {
         }
         return result;
     }
-
+    /**
+     * Handles GET requests to /api/v1/category/{id}
+     * Retrieves a single Category by their ID
+     *
+     * @param id The ID of the Category to retrieve
+     * @return The Category DTOs corresponding to the Category
+     */
     @GetMapping("/{id}")
     public de.thowl.prog3.exam.web.dto.Category getCategorybyId(@PathVariable Long id) {
         log.debug("entering getCategoryById, id={}", id);
         Category c = this.service.getCategory(id);
         return this.mapper.map(c);
     }
-
+    /**
+     * Handles GET requests to /api/v1/category/{id}
+     * Retrieves a List of Categories corresponding to a User
+     *
+     * @param userId The ID of the User to retrieve
+     * @return The Category DTOs corresponding to the User
+     */
     @GetMapping("/user/{userId}")
     public List<Category> getCategoryByUserId(@PathVariable Long userId) {
         return service.getCategoryByUserId(userId);
