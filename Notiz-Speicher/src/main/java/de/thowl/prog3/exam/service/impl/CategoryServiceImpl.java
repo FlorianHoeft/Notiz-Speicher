@@ -84,8 +84,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findOrCreateCategory(String categoryName, User user) {
         log.debug("entering findOrCreateCategory(categoryName={}, userId={})", categoryName, user.getId());
-
+        if (user.getId() == null) {
+            log.warn("Skipping category creation because user ID is null.");
+            return null;
+        }
         return repository.findByNameAndUser(categoryName.trim(), user)
+
                 .orElseGet(() -> {
                     log.info("Creating new category: {}", categoryName);
                     Category newCategory = new Category();
@@ -104,5 +108,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategoryByUserIdOrGlobal(Long userId) {
         return repository.findByUserIdOrGlobal(userId);
+    }
+
+    @Override
+    public Category getStandardCategory() {
+        return repository.findStandardCategory();
     }
 }

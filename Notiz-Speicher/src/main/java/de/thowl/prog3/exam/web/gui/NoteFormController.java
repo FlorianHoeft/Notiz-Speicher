@@ -77,6 +77,7 @@ public class NoteFormController {
                 user -> {
                     List<Category> c = categoryService.getCategoryByUserIdOrGlobal(user.getId());
                     model.addAttribute("categories", c);
+
                     model.addAttribute("note", new Note());
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
@@ -102,7 +103,7 @@ public class NoteFormController {
                 user -> {
                     List<Category> c = categoryService.getCategoryByUserIdOrGlobal(user.getId());
                     model.addAttribute("categories", c);
-                    model.addAttribute("note", new Note());
+                    //model.addAttribute("note", new Note());
                     noteRepository.findById(id).ifPresentOrElse(
                             note -> model.addAttribute("note", note),
                             () -> model.addAttribute("error", "Notiz nicht gefunden.")
@@ -131,10 +132,7 @@ public class NoteFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresent(user -> {
             note.setUser(user);
-            if (note.getCategory() != null && note.getCategory().getName() != null) {
-                Category category = categoryService.findOrCreateCategory(note.getCategory().getName(), user);
-                note.setCategory(category);
-            }
+
             authService.saveNote(note);
         });
         return "redirect:/user";

@@ -18,6 +18,8 @@ public interface CategoryService {
 
     public Category findOrCreateCategory(String categoryName, User user);
 
+    public Category getStandardCategory();
+
     /**
      * Retrieves a List of Categories based on a User ID
      *

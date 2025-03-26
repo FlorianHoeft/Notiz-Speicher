@@ -26,8 +26,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     public List<Category> findByUser(User user);
 
+
     @Query("SELECT c FROM Category c WHERE c.user.id = :userId OR c.user IS NULL")
     List<Category> findByUserIdOrGlobal(@Param("userId") Long userId);
+
+    @Query("SELECT c FROM Category c WHERE c.user.id IS NULL")
+    Category findStandardCategory();
 
     /**
      * Löscht alle Kategorien eines bestimmten Benutzers.
@@ -36,4 +40,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      */
     @Transactional
     void deleteByUserId(Long userId);
+
+    Category findByUserIdIsNull();
 }
