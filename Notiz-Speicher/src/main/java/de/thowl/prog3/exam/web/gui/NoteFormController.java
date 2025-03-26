@@ -8,6 +8,7 @@ import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import de.thowl.prog3.exam.web.mapper.NoteMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,10 +143,10 @@ public class NoteFormController {
      * Deletes a Note by its ID
      *
      * @param id The ID of the Note to delete
-     * @return Redirects to the User dashboard after deletion
+     * @return Redirects to the latest Site
      */
     @PostMapping("/user/notes/{id}/delete")
-    public String deleteNote(@PathVariable Long id) {
+    public String deleteNote(@PathVariable Long id, HttpServletRequest request) {
         System.out.println("DeleteNote aufgerufen mit ID: " + id);
         Optional<Note> optionalNote = noteRepository.findById(id);
         if (optionalNote.isEmpty()) {
@@ -153,7 +154,9 @@ public class NoteFormController {
         }
         Note note = optionalNote.get();
         noteRepository.delete(note);
-        return "redirect:/user";
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/user");
     }
 
     /**
