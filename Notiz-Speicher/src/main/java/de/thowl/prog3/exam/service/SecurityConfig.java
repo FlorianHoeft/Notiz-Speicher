@@ -25,18 +25,17 @@ public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
 
-    // Injektion des UserRepository statt AuthService
     public SecurityConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     // Security filter configuration
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/user/login", "/user/register", "/resources/**", "/share/note/**").permitAll()
-                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/user/**", "/").authenticated()
                         .anyRequest().permitAll()
                 )
                 .csrf(csrf -> csrf
@@ -56,6 +55,10 @@ public class SecurityConfig {
                         .loginPage("/user/login")
                         .defaultSuccessUrl("/user", true)
                         .permitAll()
+                ) .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/user/login");
+                        })
                 );
         return http.build();
     }

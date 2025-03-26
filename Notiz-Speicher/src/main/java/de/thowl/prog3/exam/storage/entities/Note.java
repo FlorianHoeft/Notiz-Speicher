@@ -68,8 +68,5 @@ public class Note{
     @Column(name = "share_link")
     private String shareLink;
 
-    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Attachment> attachments = new ArrayList<>();
-
 
 }
