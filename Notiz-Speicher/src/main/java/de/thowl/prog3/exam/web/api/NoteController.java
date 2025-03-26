@@ -1,9 +1,9 @@
 package de.thowl.prog3.exam.web.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.thowl.prog3.exam.service.NoteService;
 import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.web.mapper.NoteMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thowl.prog3.exam.service.NoteService;
-import de.thowl.prog3.exam.storage.entities.Note;
-import de.thowl.prog3.exam.web.mapper.NoteMapper;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Rest controller that handles HTTP requests related to Notes
  */
@@ -50,6 +49,7 @@ public class NoteController {
         }
         return result;
     }
+
     /**
      * Handles GET requests to /api/v1/notes/{id}
      * Retrieves a single Note by their ID
@@ -63,6 +63,7 @@ public class NoteController {
         Note n = this.service.getNote(id);
         return this.mapper.map(n);
     }
+
     /**
      * Handles GET requests to /api/v1/notes/{id}
      * Retrieves a List of Notes corresponding to a User

@@ -2,24 +2,22 @@ function toggleSidebar() {
     let sidebar = document.getElementById("sidebar");
     let logo = document.getElementById("logo");
 
-    // Sidebar nur umschalten, wenn das Fenster größer als 1000px ist
+
     if (window.innerWidth > 1000) {
         sidebar.classList.toggle("minimized");
         // Logo ändern je nach Sidebar-Status
         if (sidebar.classList.contains("minimized")) {
-            logo.src = "/img/thowl_logo_short.png"; // Minimiertes Logo
-            logo.classList.add("minimized");        // Minimiertes Styling
+            logo.src = "/img/thowl_logo_short.png";
+            logo.classList.add("minimized");
         } else {
-            logo.src = "/img/thowl_logo.png";       // Originales Logo
-            logo.classList.remove("minimized");     // Normales Styling
+            logo.src = "/img/thowl_logo.png";
+            logo.classList.remove("minimized");
         }
     }
 }
 
-// Event-Listener für Fenstergrößenänderung
-window.addEventListener("resize", handleResize);
 
-// Initial aufrufen, um die richtige Einstellung zu setzen
+window.addEventListener("resize", handleResize);
 handleResize();
 
 function handleResize() {
@@ -28,19 +26,19 @@ function handleResize() {
     let sidebarToggleButton = document.getElementById("sidebarToggle");
 
     if (window.innerWidth <= 1000) {
-        sidebar.classList.add("minimized");     // Sidebar minimieren
-        sidebarToggleButton.disabled = true;    // Toggle-Button deaktivieren
-        logo.src = "/img/thowl_logo_short.png"; // Minimiertes Logo
-        logo.classList.add("minimized");        // Minimiertes Styling
+        sidebar.classList.add("minimized");
+        sidebarToggleButton.disabled = true;
+        logo.src = "/img/thowl_logo_short.png";
+        logo.classList.add("minimized");
     } else {
-        sidebar.classList.remove("minimized");  // Sidebar wiederherstellen
-        sidebarToggleButton.disabled = false;   // Toggle-Button aktivieren
+        sidebar.classList.remove("minimized");
+        sidebarToggleButton.disabled = false;
         // Logo basierend auf Sidebar-Status setzen
         if (sidebar.classList.contains("minimized")) {
-            logo.src = "/img/thowl_logo_short.png"; // Minimiertes Logo
+            logo.src = "/img/thowl_logo_short.png";
             logo.classList.add("minimized");
         } else {
-            logo.src = "/img/thowl_logo.png";       // Originales Logo
+            logo.src = "/img/thowl_logo.png";
             logo.classList.remove("minimized");
         }
     }
@@ -61,12 +59,7 @@ document.getElementById('addNoteBtn').addEventListener('click', function() {
         modal.style.display = 'block';
     }
 });
-function closeModal() {
-    const modal = document.getElementById('noteModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
+
 
 function loadCategory(element) {
     const categoryId = element.getAttribute('data-id');

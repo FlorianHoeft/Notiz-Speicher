@@ -1,16 +1,16 @@
 package de.thowl.prog3.exam.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.thowl.prog3.exam.service.UserService;
 import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.storage.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Implementation of the UserService interface
  * Provides methods to retrieve Users from the repository
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> result = this.repository.findUserByName(name);
         return result.orElseThrow(IllegalArgumentException::new);
     }
+
     /**
      * Retrieves a list of all Users
      *

@@ -7,11 +7,13 @@ import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -20,20 +22,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class CategoryFormController {
+    private static final Logger log = LoggerFactory.getLogger(NoteFormController.class);
     @Autowired
     private AuthService authService;
-
-    private static final Logger log = LoggerFactory.getLogger(NoteFormController.class);
-
-    @Autowired private CategoryRepository categoryRepository;
-    @Autowired private NoteRepository noteRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private NoteRepository noteRepository;
 
     /**
      * Adds a new Category for the authenticated User
      *
      * @param userDetails The authentication details of the logged in User
-     * @param id The id from Category, which is not required
-     * @param name The name of the new Category
+     * @param id          The id from Category, which is not required
+     * @param name        The name of the new Category
      * @return Redirects to the Users profile page
      */
     @PostMapping("/user/category")  // Änderung hier
@@ -57,10 +59,11 @@ public class CategoryFormController {
         }, () -> log.error("Benutzer nicht gefunden: {}", email));
         return "redirect:/user/profile";
     }
+
     /**
      * Deletes a category based on its ID, while there is no note active with it
      *
-     * @param categoryId The ID of the Category to delete
+     * @param categoryId         The ID of the Category to delete
      * @param redirectAttributes redirect error Attribute
      * @return Redirects to the Users profile page
      */

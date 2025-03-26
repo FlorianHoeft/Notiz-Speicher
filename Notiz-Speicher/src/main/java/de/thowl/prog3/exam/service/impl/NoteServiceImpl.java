@@ -1,17 +1,18 @@
 package de.thowl.prog3.exam.service.impl;
 
+import de.thowl.prog3.exam.service.NoteService;
+import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.entities.User;
+import de.thowl.prog3.exam.storage.repositories.NoteRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.thowl.prog3.exam.storage.entities.Note;
-import de.thowl.prog3.exam.storage.entities.User;
-import de.thowl.prog3.exam.storage.repositories.NoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
-import de.thowl.prog3.exam.service.NoteService;
-import lombok.extern.slf4j.Slf4j;
 /**
  * Implementation of the NoteService interface
  * Provides methods to retrieve Notes from the repository
@@ -35,6 +36,7 @@ public class NoteServiceImpl implements NoteService {
         Optional<Note> result = this.repository.findNoteById(id);
         return result.orElseThrow(IllegalArgumentException::new);
     }
+
     /**
      * Retrieves a Note by their name
      *
@@ -47,6 +49,7 @@ public class NoteServiceImpl implements NoteService {
         Optional<Note> result = this.repository.findNoteByTitle(name);
         return result.orElseThrow(IllegalArgumentException::new);
     }
+
     /**
      * Retrieves a list of all Notes
      *
@@ -61,6 +64,7 @@ public class NoteServiceImpl implements NoteService {
         }
         return result;
     }
+
     /**
      * Retrieves all Notes belonging to a specific User
      *
@@ -71,6 +75,7 @@ public class NoteServiceImpl implements NoteService {
     public List<Note> getNoteByUserId(Long userId) {
         return repository.findByUserId(userId);
     }
+
     /**
      * Counts the number of Notes created by a specific User
      *
@@ -82,6 +87,7 @@ public class NoteServiceImpl implements NoteService {
         log.debug("entering countNotesByUser(user={})", user);
         return repository.countByUser(user);
     }
+
     /**
      * Searches for Notes based on User ID, an optional keyword and an optional Category ID
      *
@@ -91,8 +97,9 @@ public class NoteServiceImpl implements NoteService {
      * @return A list of Notes matching the criteria
      */
     public List<Note> searchNotes(Long userId, String keyword, Long categoryId) {
-        return repository.findByUserIdAndFilters(userId, keyword, categoryId,Sort.by(Sort.Direction.ASC, "id"));
+        return repository.findByUserIdAndFilters(userId, keyword, categoryId, Sort.by(Sort.Direction.ASC, "id"));
     }
+
     @Override
     public List<Note> searchNotesSorted(Long userId, String keyword, Long categoryId, Sort sort) {
         return repository.findByUserIdAndFilters(userId, keyword, categoryId, sort);

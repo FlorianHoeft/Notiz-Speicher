@@ -1,8 +1,9 @@
 package de.thowl.prog3.exam.web.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.thowl.prog3.exam.service.UserService;
+import de.thowl.prog3.exam.storage.entities.User;
+import de.thowl.prog3.exam.web.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thowl.prog3.exam.service.UserService;
-import de.thowl.prog3.exam.storage.entities.User;
-import de.thowl.prog3.exam.web.mapper.UserMapper;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Rest controller that handles HTTP requests related to Users
  */
@@ -49,6 +49,7 @@ public class UserController {
         }
         return result;
     }
+
     /**
      * Handles GET requests to /api/v1/users/{id}
      * Retrieves a single User by their ID

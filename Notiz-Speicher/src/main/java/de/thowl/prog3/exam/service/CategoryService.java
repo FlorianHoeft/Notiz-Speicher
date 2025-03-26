@@ -3,14 +3,7 @@ package de.thowl.prog3.exam.service;
 import java.util.List;
 
 import de.thowl.prog3.exam.storage.entities.Category;
-import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.entities.User;
-import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import java.util.List;
-import de.thowl.prog3.exam.storage.entities.Category;
 
 /**
  * Interface for managing and retrieving Notes

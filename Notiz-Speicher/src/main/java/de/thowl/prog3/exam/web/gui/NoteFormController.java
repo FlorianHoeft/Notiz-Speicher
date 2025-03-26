@@ -1,22 +1,24 @@
 package de.thowl.prog3.exam.web.gui;
 
-import de.thowl.prog3.exam.service.CategoryService;
-import de.thowl.prog3.exam.storage.entities.*;
-import de.thowl.prog3.exam.storage.repositories.NoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import de.thowl.prog3.exam.service.NoteService;
-import de.thowl.prog3.exam.web.mapper.NoteMapper;
 import de.thowl.prog3.exam.service.AuthService;
+import de.thowl.prog3.exam.service.CategoryService;
+import de.thowl.prog3.exam.service.NoteService;
+import de.thowl.prog3.exam.storage.entities.Category;
 import de.thowl.prog3.exam.storage.entities.Note;
+import de.thowl.prog3.exam.storage.entities.User;
+import de.thowl.prog3.exam.storage.repositories.NoteRepository;
+import de.thowl.prog3.exam.web.mapper.NoteMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,15 +34,17 @@ import java.util.UUID;
 public class NoteFormController {
 
     private static final Logger log = LoggerFactory.getLogger(NoteFormController.class);
-    @Autowired private AuthService authService;
-    @Autowired private NoteRepository noteRepository;
-    @Autowired private CategoryService categoryService;
+    @Autowired
+    NoteService svc;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private NoteRepository noteRepository;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     @Qualifier("notemapper")
     private NoteMapper mapper = new NoteMapper();
-
-    @Autowired
-    NoteService svc;
 
     /**
      * Adds the currently authenticated user's name to the model
@@ -54,15 +58,16 @@ public class NoteFormController {
                 .map(User::getName)
                 .orElse("Gast");
     }
+
     /**
      * Displays the form to create a new Note
      *
      * @param userDetails The authenticated User details
-     * @param model The model to store attributes
+     * @param model       The model to store attributes
      * @return The note creation form view
      */
     @GetMapping("/user/notes/new")
-    public String showNewNoteForm(@AuthenticationPrincipal UserDetails userDetails,Model model) {
+    public String showNewNoteForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showNewNoteForm");
 
         if (userDetails == null) return "redirect:/user/login";
@@ -70,7 +75,6 @@ public class NoteFormController {
         String email = userDetails.getUsername();
         authService.findUserByEmail(email).ifPresentOrElse(
                 user -> {
-                    //List<Category> c = categoryService.getCategoryByUserId(user.getId());
                     List<Category> c = categoryService.getCategoryByUserIdOrGlobal(user.getId());
                     model.addAttribute("categories", c);
                     model.addAttribute("note", new Note());
@@ -83,14 +87,13 @@ public class NoteFormController {
     /**
      * Displays the form to edit an existing Note
      *
-     * @param id The ID of the Note to edit
+     * @param id    The ID of the Note to edit
      * @param model The model to store attributes
      * @return The Note editing form view
      */
     @GetMapping("/user/notes/{id}")
-    public String showEditNoteForm(@PathVariable("id") Long id,@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String showEditNoteForm(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         log.debug("entering showEditNoteForm for note id: {}", id);
-
 
         if (userDetails == null) return "redirect:/user/login";
 
@@ -101,30 +104,21 @@ public class NoteFormController {
                     model.addAttribute("categories", c);
                     model.addAttribute("note", new Note());
                     noteRepository.findById(id).ifPresentOrElse(
-                    note -> model.addAttribute("note", note),
+                            note -> model.addAttribute("note", note),
                             () -> model.addAttribute("error", "Notiz nicht gefunden.")
-        );
+                    );
                 },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
         );
-
-
-        /*
-        noteRepository.findById(id).ifPresentOrElse(
-                List<Category> c = categoryService.getCategoryByUserId(user.getId());
-                note -> model.addAttribute("note", note),
-                () -> model.addAttribute("error", "Notiz nicht gefunden.")
-        );*/
-
-
         return "note-form";
     }
+
     /**
      * Saves a new or updated Note
      *
-     * @param note The Note object
+     * @param note        The Note object
      * @param userDetails The authenticated User details
-     * @param model The model to store attributes
+     * @param model       The model to store attributes
      * @return Redirects to the User dashboard after saving
      */
     @PostMapping("/user/notes")
@@ -145,6 +139,7 @@ public class NoteFormController {
         });
         return "redirect:/user";
     }
+
     /**
      * Deletes a Note by its ID
      *
@@ -166,8 +161,8 @@ public class NoteFormController {
     /**
      * Generates a UUID to get a Link to share
      *
-     * @param noteId current noteID
-     * @param userDetails The authenticated User details
+     * @param noteId             current noteID
+     * @param userDetails        The authenticated User details
      * @param redirectAttributes To show messages
      * @return
      */
@@ -203,7 +198,7 @@ public class NoteFormController {
      * Loads a site to a shared note
      *
      * @param shareLink Shared link to the note
-     * @param model The model to store attributes
+     * @param model     The model to store attributes
      * @return
      */
     @GetMapping("/share/note/{shareLink}")

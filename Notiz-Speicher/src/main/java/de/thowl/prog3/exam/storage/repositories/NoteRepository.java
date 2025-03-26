@@ -1,15 +1,15 @@
 package de.thowl.prog3.exam.storage.repositories;
 
-import java.util.Optional;
-
 import de.thowl.prog3.exam.storage.entities.Note;
-import org.springframework.data.domain.Sort;
 import de.thowl.prog3.exam.storage.entities.User;
-import java.util.List;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository interface for accessing and managing Note entities in the database
@@ -38,22 +38,24 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     /**
      * Finds notes for a user with optional filters: keyword (in title or content) and category
      *
-     * @param userId the ID of the user
-     * @param keyword the keyword to search in content or title (optional)
+     * @param userId     the ID of the user
+     * @param keyword    the keyword to search in content or title (optional)
      * @param categoryId the ID of the category to filter by (optional)
      * @return a list of matching notes
      */
     @Query("SELECT n FROM Note n WHERE n.user.id = :userId " +
-                  "AND (:keyword IS NULL OR LOWER(n.content) LIKE LOWER(CONCAT('%', :keyword, '%'))OR :keyword IS NULL OR LOWER(n.title) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-                     "AND (:categoryId IS NULL OR n.category.id = :categoryId)")
+            "AND (:keyword IS NULL OR LOWER(n.content) LIKE LOWER(CONCAT('%', :keyword, '%'))OR :keyword IS NULL OR LOWER(n.title) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "AND (:categoryId IS NULL OR n.category.id = :categoryId)")
     List<Note> findByUserIdAndFilters(@Param("userId") Long userId,
                                       @Param("keyword") String keyword,
                                       @Param("categoryId") Long categoryId,
-                                       Sort sort);
+                                      Sort sort);
 
     int countByUser(User user);
+
     /**
      * Löscht alle Notizen eines bestimmten Benutzers.
+     *
      * @param userId Die ID des Benutzers, dessen Notizen gelöscht werden sollen.
      */
     @Transactional

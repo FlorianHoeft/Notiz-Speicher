@@ -1,118 +1,111 @@
-/* Standard Sidebar (15% Breite) */
 .sidebar {
-    width: 225px !important; /* Feste Breite */
-    height: 100vh; /* Ganze Höhe des Bildschirms */
-    background-color: #2c3e50; /* Blau */
+    width: 225px !important;
+    height: 100vh;
+    background-color: #2c3e50; /* Blue */
     position: fixed;
     top: 0;
     left: 0;
     padding: 20px;
-    transition: width 0.3s ease-in-out; /* Animation */
+    transition: width 0.3s ease-in-out;
     color: white;
-    display: flex; /* Flexbox aktivieren */
-    flex-direction: column; /* Vertikale Anordnung */
+    display: flex;
+    flex-direction: column;
     box-sizing: content-box !important;
 }
 
-
-/* Wenn minimiert (5% Breite) */
 .sidebar.minimized {
     width: 25px !important;
 }
-/* Wenn minimiert: Nur Icons anzeigen, Text ausblenden */
+
 .sidebar.minimized ul li a {
     justify-content: center;
     padding: 10px 0;
 }
 .sidebar.minimized ul li a span {
-    display: none; /* Text ausblenden */
+    display: none;
 }
 .sidebar.minimized ul li a i {
     margin-right: 0;
     text-align: center;
-    width: 100%; /* Volle Breite für zentriertes Icon */
+    width: 100%;
 }
-/* Icons bleiben sichtbar */
+/* Icons stay visible */
 .sidebar i {
     width: 25px;
     text-align: center;
 }
-/* Menü-Liste weiter nach unten verschieben */
+
 .sidebar ul {
     padding: 0;
     list-style: none;
-    margin-top: 100px; /* Hier wird der Abstand der Liste nach unten angepasst */
+    margin-top: 100px;
 }
-/* Menü-Elemente */
+/* Menü-Elements */
 .sidebar ul li {
     display: flex;
     align-items: center;
 }
-/* Abstand zwischen Icon und Text */
+/* Distance between Icon and Text */
 .sidebar ul li a i {
     margin-right: 10px;
 }
 
-/* Sidebar Links (Text und Icon) */
+/* Sidebar Links (Text and Icon) */
 .sidebar ul li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
     display: flex;
     align-items: center;
-    padding: 10px; /* Padding bleibt für Innenabstand */
+    padding: 10px;
     border-radius: 5px;
     transition: background-color 0.5s ease;
     white-space: nowrap;
-    height: 40px; /* Feste Höhe */
-    width: 100%; /* Volle Breite des übergeordneten Elements */
-    box-sizing: border-box; /* Padding wird in die Breite einbezogen */
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Hover-Effekt für Links (Farbe ändern, wenn der Nutzer darüber fährt) */
 .sidebar ul li a:hover {
-    background-color: #34495e; /* Etwas hellerer Hintergrund bei Hover */
+    background-color: #34495e;
 }
 
 .logo {
     position: fixed;
-    top: 20px; /* Abstand vom oberen Rand */
-    left: 60px; /* Abstand vom linken Rand */
+    top: 20px;
+    left: 60px;
     width: 200px;
-    z-index: 1000; /* Button über der Sidebar */
+    z-index: 1000;
     transition: all 0.3s ease
 }
-/* Minimiertes Logo: Knapp unterhalb des Toggle-Buttons */
+
 #logo.minimized {
-    top: 70px;      /* Beispiel: knapp unter dem Toggle-Button */
-    left: 15px;     /* Neue Position */
-    width: 40px;    /* Kleinere Breite */
+    top: 70px;
+    left: 15px;
+    width: 40px;
 }
 
-/* Sicherstellen, dass der Link um das Logo keine Unterstreichung hat */
 #logoLink {
-    text-decoration: none; /* Keine Unterstreichung */
+    text-decoration: none;
 }
 
-/* Cursor ändern, wenn der Benutzer über das Logo fährt */
+
 #logoLink:hover {
-    cursor: pointer; /* Zeigt an, dass das Logo klickbar ist */
+    cursor: pointer;
 }
-/* Hauptinhalt direkt neben der Sidebar */
+
 .content {
     flex-grow: 1;
-    margin-left: 250px; /* Gleiche Breite wie die Sidebar */
+    margin-left: 250px;
     padding: 20px;
-    margin-top: 30px; /* Abstand vom oberen Rand (bewegt sich mit der Sidebar) */
-    transition: margin-left 0.3s ease-in-out, margin-top 0.3s ease-in-out; /* Animation für Sidebar-Einblendung und Verschiebung */
+    margin-top: 30px;
+    transition: margin-left 0.3s ease-in-out, margin-top 0.3s ease-in-out;
 }
 
-/* Wenn Sidebar minimiert wird */
 .sidebar.minimized + .content {
-    margin-left: 75px; /* Verändert den Abstand, wenn die Sidebar minimiert wird */
+    margin-left: 75px;
 }
 
-/* Sidebar ausblenden (bei kleinem Fenster) */
 @media screen and (max-width: 1100px) {
     .sidebar {
         width: 0;
@@ -120,35 +113,35 @@
     }
 
     .content {
-        margin-left: 25px; /* Kein Platz für die Sidebar mehr */
-        margin-top: 80px; /* Kleineren Abstand oben, wenn das Fenster kleiner wird */
+        margin-left: 25px;
+        margin-top: 80px;
     }
 }
 /* Button für Sidebar-Toggle */
 .sidebar-toggle {
     position: fixed;
-    top: 20px; /* Abstand vom oberen Rand */
-    left: 20px; /* Abstand vom linken Rand */
+    top: 20px;
+    left: 20px;
     background: none;
     border: none;
     font-size: 30px;
     color: white;
     cursor: pointer;
-    z-index: 1000; /* Button über der Sidebar */
+    z-index: 1000;
 }
 .sidebar-toggle:focus {
     outline: none;
 }
-/* Button deaktivieren, wenn das Fenster klein ist */
+
 .sidebar-toggle:disabled {
-    cursor: not-allowed;  /* Zeiger wird geändert, um anzuzeigen, dass der Button deaktiviert ist */
-    opacity: 0.5; /* Button erscheint halbtransparent */
+    cursor: not-allowed;
+    opacity: 0.5; /
 }
 /* Bottom-Items */
 .bottom-items {
-    position: absolute; /* Absolute Positionierung relativ zur Sidebar */
-    bottom: 50px; /* Abstand vom unteren Rand – anpassbar, z. B. 50px */
-    width: calc(100% - 40px); /* Volle Breite minus Padding der Sidebar (20px links + 20px rechts) */
+    position: absolute;
+    bottom: 50px;
+    width: calc(100% - 40px);
     padding: 0;
     list-style: none;
 }
@@ -166,25 +159,25 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background-color: #dc3545; /* Rot = nicht erfüllt */
+    background-color: #dc3545;
 }
 .requirement-indicator.valid {
-    background-color: #28a745; /* Grün = erfüllt */
+    background-color: #28a745;
 }
 .password-container {
     position: relative;
 }
 .password-toggle-btn {
     position: absolute;
-    right: 15px; /* Etwas mehr Abstand vom Rand */
-    top: 80%; /* Anpassung für bessere Zentrierung relativ zum Label und Input */
+    right: 15px;
+    top: 80%;
     transform: translateY(-50%);
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
-    color: #6c757d; /* Bootstrap Grau */
-    font-size: 1.2rem; /* Größe des Icons leicht erhöht */
+    color: #6c757d; /* Bootstrap Gray */
+    font-size: 1.2rem; /* Icons bigger */
 }
 
 .grid-container {

@@ -1,16 +1,17 @@
 package de.thowl.prog3.exam.service.impl;
 
+import de.thowl.prog3.exam.service.CategoryService;
+import de.thowl.prog3.exam.storage.entities.Category;
+import de.thowl.prog3.exam.storage.entities.User;
+import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.thowl.prog3.exam.service.CategoryService;
-import de.thowl.prog3.exam.storage.entities.Category;
-import de.thowl.prog3.exam.storage.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import de.thowl.prog3.exam.storage.repositories.CategoryRepository;
-import lombok.extern.slf4j.Slf4j;
 /**
  * Implementation of the CategoryService interface
  * Provides methods to retrieve Categories from the repository
@@ -21,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired // Automatically injects the CategoryRepository bean
     private CategoryRepository repository;
+
     /**
      * Retrieves a Category by its ID
      *
@@ -33,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> result = this.repository.findCategoryById(id);
         return result.orElseThrow(IllegalArgumentException::new);
     }
+
     /**
      * Retrieves a Category by their name
      *
@@ -45,6 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> result = this.repository.findCategoryByName(name);
         return result.orElseThrow(IllegalArgumentException::new);
     }
+
     /**
      * Retrieves a list of all Categories
      *
@@ -59,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return result;
     }
+
     /**
      * Retrieves all Categories that belong to a specific User
      *
@@ -68,11 +73,12 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategoryByUserId(Long userId) {
         return repository.findCategoryByUserId(userId);
     }
+
     /**
      * Finds an existing Category by name and User, or creates a new one if it doesnt exist
      *
      * @param categoryName The name of the Category
-     * @param user The User who owns the Category
+     * @param user         The User who owns the Category
      * @return The found or newly created Category object
      */
     @Override
@@ -89,6 +95,12 @@ public class CategoryServiceImpl implements CategoryService {
                 });
     }
 
+    /**
+     * Getting Category by User or the global if there are none
+     *
+     * @param userId Id of a User
+     * @return All categories
+     */
     @Override
     public List<Category> getCategoryByUserIdOrGlobal(Long userId) {
         return repository.findByUserIdOrGlobal(userId);

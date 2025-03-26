@@ -2,6 +2,8 @@ package de.thowl.prog3.exam.service;
 
 import de.thowl.prog3.exam.storage.repositories.UserRepository;
 import de.thowl.prog3.exam.web.api.UserController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,12 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Configuration
 @EnableWebSecurity
@@ -28,13 +27,19 @@ public class SecurityConfig {
     public SecurityConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    // Security filter configuration
+
+    /**
+     * Security filter configuration, with cookies etc.
+     *
+     * @param http Creates the Service
+     * @return Is the setup for the website
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/user/login", "/user/register", "/resources/**", "/share/note/**").permitAll()
+                        .requestMatchers("/user/login", "/user/register", "/resources/**", "/share/note/**", "/h2-console/**").permitAll()
                         .requestMatchers("/user/**", "/").authenticated()
                         .anyRequest().permitAll()
                 )
@@ -48,14 +53,14 @@ public class SecurityConfig {
                         .logoutUrl("/user/logout")
                         .logoutSuccessUrl("/user/login?logout=true")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "remember-me")  // Löscht das Session-Cookie und das "remember-me" Cookie
+                        .deleteCookies("JSESSIONID", "remember-me")
                         .clearAuthentication(true)
                 )
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .defaultSuccessUrl("/user", true)
                         .permitAll()
-                ) .exceptionHandling(exceptions -> exceptions
+                ).exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendRedirect("/user/login");
                         })
@@ -63,7 +68,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Bean for UserDetailsService to load user information for Spring Security authentication
+    /**
+     * Bean for UserDetailsService to load user information for Spring Security authentication
+     *
+     * @return User who is currently logged in
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         log.debug("Loading user details");
@@ -78,12 +87,24 @@ public class SecurityConfig {
         };
     }
 
-    // PasswordEncoder Bean using the custom Encryptor class
-    // Verwenden von BCryptPasswordEncoder
+    /**
+     * Using BCryptPasswordEncoder
+     *
+     * @return Encoded Password
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    /**
+     * Configures the AuthenticationManager for user authentication.
+     * This method is exposed as a Bean to be used within the Spring Security context.
+     *
+     * @param authConfig The AuthenticationConfiguration instance that provides authentication settings.
+     * @return An AuthenticationManager responsible for handling user authentication.
+     * @throws Exception If an error occurs while creating the AuthenticationManager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

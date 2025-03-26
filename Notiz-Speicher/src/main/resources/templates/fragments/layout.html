@@ -4,13 +4,12 @@
 <head>
     <title th:text="${title}">Standardtitel</title>
 
-    <!-- Globale Stylesheets -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> <!-- For Icons-->
 </head>
 <body>
 <div th:fragment="layout(content)">
-    <!-- Sidebar & Hauptlayout -->
+    <!-- Sidebar & Main layout -->
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
 
     <!-- Logo -->
@@ -41,7 +40,7 @@
         </ul>
     </div>
 
-    <!-- Hauptinhalt (kommt von der spezifischen Seite) -->
+    <!-- Main Content -->
     <div class="content" id="content">
         <div th:replace="${content}"></div>
     </div>
