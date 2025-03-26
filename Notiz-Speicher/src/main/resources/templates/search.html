@@ -48,7 +48,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
+
                         <th>Titel</th>
                         <th>Kategorie</th>
                         <th>Inhalt</th>
@@ -57,7 +57,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="n : ${searchedNotes}">
-                        <td th:text="${n.id}"></td>
+
                         <td th:text="${n.title}"></td>
                         <td th:text="${n.category.name}"></td>
                         <td th:text="${n.content}"></td>

@@ -218,7 +218,6 @@ public class UserFormController {
         user -> {
             log.debug("entering showDocumentsForm");
             List<Note> n = service.getNoteByUserId(user.getId());
-            System.out.println("HALLLLLOOOOO HIEEEEEEEEEEEERRRRRRRRRRRRRR BRRRRRRRRRRRRRRRRRRAAAAAAAAAAA"+n.get(1));
             model.addAttribute("n", n);
         },
                 () -> model.addAttribute("error", "Benutzer nicht gefunden.")
