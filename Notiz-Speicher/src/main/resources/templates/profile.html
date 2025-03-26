@@ -13,10 +13,10 @@
         <div th:if="${param.success}" class="alert alert-success">
             Passwort wurde erfolgreich geändert.
         </div>
-        <!-- Fehlermeldung -->
+        <!-- Error Message -->
         <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
-        <!-- Benutzerinformationen -->
+        <!-- User information -->
         <div class="card p-4 mb-4">
             <h5>Persönliche Daten</h5>
             <form th:action="@{/user/update}" method="post">
@@ -28,24 +28,31 @@
                     <label for="email" class="form-label">E-Mail</label>
                     <input type="email" class="form-control" id="email" th:value="${user?.email}" readonly>
                 </div>
-                <button type="submit" class="btn btn-primary">Speichern</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Speichern
+                </button>
             </form>
         </div>
 
-        <!-- Passwort ändern Button -->
+        <!-- Password changing Button -->
         <div class="mb-4">
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#passwordModal">Passwort ändern</button>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                <i class="fas fa-key"></i> Passwort ändern
+            </button>
         </div>
 
-        <!-- Statistik -->
+
+        <!-- Statistic -->
         <div class="card p-4  mb-4">
             <h5>Statistik</h5>
             <p>Gespeicherte Notizen: <strong th:text="${notesCount}"></strong></p>
         </div>
 
-        <!-- Benutzer löschen Button -->
+        <!-- Deleting User Button -->
         <div class="mb-4">
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">Benutzer löschen</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                <i class="fas fa-user-slash"></i> Benutzer löschen
+            </button>
         </div>
 
         <!--Manage Category -->
@@ -70,7 +77,7 @@
             </div>
         </div>
 
-        <!-- Passwort ändern Modal -->
+        <!-- Password changing Modal -->
         <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -102,12 +109,12 @@
                                     <span class="material-icons">visibility</span>
                                 </button>
                             </div>
-                            <!-- Fortschrittsleiste -->
+                            <!-- Progressbar -->
                             <div class="progress mt-2">
                                 <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
                             </div>
 
-                            <!-- Passwort-Anforderungen -->
+                            <!-- Password-Requirement -->
                             <small>Das Passwort muss folgende Anforderungen erfüllen:</small>
                             <div class="requirement"><div class="requirement-indicator" id="lengthIndicator"></div>Mindestens 8 Zeichen</div>
                             <div class="requirement"><div class="requirement-indicator" id="specialCharIndicator"></div>Mindestens 2 Sonderzeichen</div>
@@ -122,7 +129,7 @@
                 </div>
             </div>
         </div>
-        <!-- Benutzer löschen Modal -->
+        <!-- Deleting User Modal -->
         <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -142,7 +149,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal für das Hinzufügen und Bearbeiten von Kategorien -->
+        <!-- Manage Category Modal -->
         <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -160,8 +167,12 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="deleteCategory()">Löschen</button>
-                        <button type="button" class="btn btn-success" onclick="saveCategory()">Speichern</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteCategory()">
+                            <i class="fas fa-trash-alt"></i> Löschen
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="saveCategory()">
+                            <i class="fas fa-save"></i> Speichern
+                        </button>
                     </div>
                 </div>
             </div>
