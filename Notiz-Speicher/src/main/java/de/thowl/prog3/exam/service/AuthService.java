@@ -69,7 +69,7 @@ public class AuthService {
     }
 
     /**
-     * save Note
+     * Save Note
      *
      * @param note new note to save
      */
@@ -110,7 +110,7 @@ public class AuthService {
     }
 
     /**
-     * Deletes User from Database in the correct way
+     * Deletes User from Database in the correct way, so first the notes then categories and finally the user
      *
      * @param userId ID from user
      * @return true, if user is deleted correctly

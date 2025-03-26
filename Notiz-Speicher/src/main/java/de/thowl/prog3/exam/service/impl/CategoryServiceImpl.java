@@ -76,6 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * Finds an existing Category by name and User, or creates a new one if it doesnt exist
+     * Global categories (with userId = null) are reused instead of being duplicated.
      *
      * @param categoryName The name of the Category
      * @param user         The User who owns the Category
@@ -84,9 +85,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findOrCreateCategory(String categoryName, User user) {
         log.debug("entering findOrCreateCategory(categoryName={}, userId={})", categoryName, user.getId());
-        if (user.getId() == null) {
-            log.warn("Skipping category creation because user ID is null.");
-            return null;
+        Optional<Category> globalCategory = repository.findByNameAndUser(categoryName.trim(), null);
+
+        if (globalCategory.isPresent()) {
+            log.info("Using existing global category: {}", categoryName);
+            return globalCategory.get();
         }
         return repository.findByNameAndUser(categoryName.trim(), user)
 

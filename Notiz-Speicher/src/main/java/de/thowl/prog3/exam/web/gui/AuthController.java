@@ -34,18 +34,37 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * Shows Login Page
+     *
+     * @return Login Page
+     */
     @GetMapping("/user/login")
     public String showLoginForm() {
         log.debug("entering showLoginForm");
         return "login";
     }
 
+    /**
+     * Shows register Page
+     *
+     * @return Register Page
+     */
     @GetMapping("/user/register")
     public String showRegisterForm() {
         log.debug("entering showRegisterForm");
         return "register";
     }
 
+    /**
+     * Does register the new User and checks if every acceptance criteria is matched
+     *
+     * @param username           username
+     * @param password           new passowrd
+     * @param email              new email
+     * @param redirectAttributes redirects to the right page with Attributes
+     * @return
+     */
     @PostMapping("/user/register")
     public String register(@RequestParam("username") String username,
                            @RequestParam("password") String password,
@@ -68,6 +87,16 @@ public class AuthController {
         }
     }
 
+    /**
+     * Change Password to the new one and checks if it is allowed to change
+     *
+     * @param userDetails     current user
+     * @param model           model to use
+     * @param currentPassword old password
+     * @param newPassword     new password
+     * @param confirmPassword new password to confirm
+     * @return correct new page
+     */
     @PostMapping("/user/newPassword")
     public String changePassword(@AuthenticationPrincipal UserDetails userDetails,
                                  Model model,
@@ -94,12 +123,12 @@ public class AuthController {
     }
 
     /**
-     * Löscht den angemeldeten Benutzer und leitet zur Startseite um.
+     * Deletes User the correct way, also deletes cookies with request logout
      *
-     * @param userDetails        Die Details des angemeldeten Benutzers.
-     * @param redirectAttributes Zum Übermitteln von Erfolgsmeldungen.
-     * @param request
-     * @return Weiterleitung zur Startseite.
+     * @param userDetails        current User
+     * @param redirectAttributes Redirects to the right page with Attributes.
+     * @param request            request logout
+     * @return redirect to loginpage
      */
     @PostMapping("/user/delete")
     public String deleteUser(@AuthenticationPrincipal UserDetails userDetails,
@@ -121,10 +150,10 @@ public class AuthController {
     /**
      * Update the current Username to the new one
      *
-     * @param userDetails
-     * @param name
-     * @param model
-     * @return
+     * @param userDetails current user
+     * @param name        new username
+     * @param model       model to work with
+     * @return redirects to /user/profile
      */
     @PostMapping("/user/update")
     public String updateUser(@AuthenticationPrincipal UserDetails userDetails,
