@@ -9,7 +9,7 @@ import de.thowl.prog3.exam.storage.entities.User;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Sort;
 import de.thowl.prog3.exam.service.NoteService;
 import lombok.extern.slf4j.Slf4j;
 /**
@@ -91,7 +91,11 @@ public class NoteServiceImpl implements NoteService {
      * @return A list of Notes matching the criteria
      */
     public List<Note> searchNotes(Long userId, String keyword, Long categoryId) {
-        return repository.findByUserIdAndFilters(userId, keyword, categoryId);
+        return repository.findByUserIdAndFilters(userId, keyword, categoryId,Sort.by(Sort.Direction.ASC, "id"));
+    }
+    @Override
+    public List<Note> searchNotesSorted(Long userId, String keyword, Long categoryId, Sort sort) {
+        return repository.findByUserIdAndFilters(userId, keyword, categoryId, sort);
     }
 
 }

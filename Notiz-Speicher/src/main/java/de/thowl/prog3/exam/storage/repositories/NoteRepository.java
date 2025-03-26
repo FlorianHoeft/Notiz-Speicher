@@ -3,7 +3,7 @@ package de.thowl.prog3.exam.storage.repositories;
 import java.util.Optional;
 
 import de.thowl.prog3.exam.storage.entities.Note;
-
+import org.springframework.data.domain.Sort;
 import de.thowl.prog3.exam.storage.entities.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,7 +48,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
                      "AND (:categoryId IS NULL OR n.category.id = :categoryId)")
     List<Note> findByUserIdAndFilters(@Param("userId") Long userId,
                                       @Param("keyword") String keyword,
-                                      @Param("categoryId") Long categoryId);
+                                      @Param("categoryId") Long categoryId,
+                                       Sort sort);
 
     int countByUser(User user);
     /**

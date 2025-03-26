@@ -9,6 +9,7 @@ import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -137,8 +138,8 @@ public class UserFormController {
     @GetMapping("/user/search")
     public String showSearchForm(@AuthenticationPrincipal UserDetails userDetails,
                                  @RequestParam(name = "query", required = false) String keyword,
-                                 @RequestParam(name = "category", required = false) Long categoryId,
-                                 Model model) {
+                                 @RequestParam(name = "category", required = false) Long categoryId, Model model,
+                                 @RequestParam(name = "sort", required = false) String sort) {
         log.debug("entering showSearchForm");
 
         if (userDetails == null) return "redirect:/user/login";
@@ -151,8 +152,19 @@ public class UserFormController {
                     model.addAttribute("search", n);
                     model.addAttribute("categories", c);
 
-                    List<Note> searchedNotes = service.searchNotes(user.getId(), keyword, categoryId);
+                    Sort sortOption = Sort.by(Sort.Direction.ASC, "id");
+                    if ("date_desc".equals(sort)) {
+                        log.debug("Sorting by lastModified DESC");
+                        sortOption = Sort.by(Sort.Direction.DESC, "lastModified");
+                    } else if ("date_asc".equals(sort)) {
+                        log.debug("Sorting by lastModified ASC");
+                        sortOption = Sort.by(Sort.Direction.ASC, "lastModified");
+                    }
+
+                    List<Note> searchedNotes = service.searchNotesSorted(user.getId(), keyword, categoryId, sortOption);
+
                     model.addAttribute("searchedNotes", searchedNotes);
+                    model.addAttribute("currentSort", sort);
                     if (!n.isEmpty()) {
                         log.debug("First note content: {}", n.get(0).getContent());
                     } else {

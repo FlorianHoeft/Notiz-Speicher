@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.thowl.prog3.exam.storage.entities.Note;
 import de.thowl.prog3.exam.storage.entities.User;
+import org.springframework.data.domain.Sort;
 /**
  * Interface for managing and retrieving Notes
  */
@@ -31,5 +32,6 @@ public interface NoteService {
      * @param categoryId Id of a Category
      */
     List<Note> searchNotes(Long userId, String keyword, Long categoryId);
+    List<Note> searchNotesSorted(Long userId, String keyword, Long categoryId, Sort sort);
 
 }

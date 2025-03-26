@@ -28,6 +28,14 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> Suchen
                     </button>
+                    <a th:href="@{/user/search(query=${param.query}, category=${param.category}, sort='date_desc')}"
+                       class="btn btn-secondary">
+                        <i class="fas fa-sort-numeric-down"></i> Neuste zuerst
+                    </a>
+                    <a th:href="@{/user/search(query=${param.query}, category=${param.category}, sort='date_asc')}"
+                       class="btn btn-secondary">
+                        <i class="fas fa-sort-numeric-up"></i> Älteste zuerst
+                    </a>
                 </div>
             </div>
         </form>
@@ -46,6 +54,7 @@
                         <th>Titel</th>
                         <th>Kategorie</th>
                         <th>Inhalt</th>
+                        <th>Änderungsdatum</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,6 +63,7 @@
                         <td th:text="${n.title}"></td>
                         <td th:text="${n.category.name}"></td>
                         <td th:text="${n.content}"></td>
+                        <td th:text="${#temporals.format(n.lastModified, 'dd.MM.yyyy HH:mm')}"></td>
                         <td>
                             <div class="d-flex gap-2">
                                 <a th:href="@{/user/notes/{id}(id=${n.id})}" class="btn btn-sm btn-primary">
